@@ -1,0 +1,2773 @@
+<!-- ======================================================== -->
+<!-- 網站設定與版本資訊 -->
+<!-- 本站介面架構改編自「芒果醬 Mango Jump」活動網站 -->
+<!-- 原始架構開發者：blues (Threads: https://www.threads.com/@blues_.g)，已取得原作者授權修改 -->
+<!-- 改版對象：CRISPY 脆樂團 演出資訊 -->
+<!-- ======================================================== -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CRISPY 脆樂團 演出資訊</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg-main: #fae9e1;
+      --bg-card: #FFFFFF;
+      --text-main: #3D3833;
+      --text-secondary: #8C8273;
+      --accent: #ec7067;
+      --accent-dark: #dd5448;
+      --accent-light: #FFF4E5;
+      --border: rgba(61, 56, 51, 0.09);
+      --blur-bg: rgba(250, 233, 225, 0.95);
+      --r-color: #34C759;
+      --sr-color: #007AFF;
+      --ssr-color: #AF52DE;
+      --sssr-color: #FF2D55;
+      --up: #34C759;
+      --dn: #FF3B30;
+      --nav-h: 96px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding-top: var(--nav-h);
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      background: var(--blur-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 0.4rem 1rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .03);
+    }
+
+    .nav-top-row {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.3rem;
+      padding: 0 0.5rem;
+    }
+
+    .nav-brand {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1px;
+    }
+
+    .nav-profile-btn {
+      background: var(--accent-light);
+      border: 1.5px solid var(--accent);
+      color: var(--accent-dark);
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.2s;
+      box-shadow: 0 2px 8px rgba(236, 112, 103, 0.15);
+      white-space: nowrap;
+    }
+
+    .nav-profile-btn:hover,
+    .nav-profile-btn.active {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .nav-bottom-row {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+      white-space: nowrap;
+      border-top: 1px solid var(--border);
+      padding-top: 0.3rem;
+    }
+
+    .nav-bottom-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-item {
+      color: var(--text-main);
+      font-size: .88rem;
+      font-weight: 500;
+      cursor: pointer;
+      padding: .2rem .4rem;
+      border-bottom: 2px solid transparent;
+      transition: .2s;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      color: var(--accent-dark);
+      border-bottom-color: var(--accent);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .view {
+      display: none;
+      animation: fadeIn .35s ease-out;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    h2,
+    h3 {
+      font-weight: 600;
+      letter-spacing: -.02em;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, .03);
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: .75rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .badge.R {
+      background: var(--r-color);
+    }
+
+    .badge.SR {
+      background: var(--sr-color);
+    }
+
+    .badge.SSR {
+      background: var(--ssr-color);
+    }
+
+    .badge.SSSR {
+      background: var(--sssr-color);
+    }
+
+    .badge.N {
+      background: #999;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: .8rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      background: var(--bg-main);
+      outline: none;
+      transition: .2s;
+      color: var(--text-main);
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      background: var(--bg-card);
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: .8rem 1.5rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .2s;
+      box-shadow: 0 4px 12px rgba(236, 112, 103, .18);
+    }
+
+    .btn:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-sm {
+      padding: .4rem .9rem;
+      font-size: .85rem;
+      border-radius: 8px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--accent);
+      color: var(--accent-dark);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--accent-light);
+      transform: none;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background: var(--bg-main);
+      transform: none;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .dropdown-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .09);
+      margin-top: .5rem;
+      z-index: 50;
+      max-height: 260px;
+      overflow-y: auto;
+      display: none;
+      border: 1px solid var(--border);
+    }
+
+    .dropdown-item {
+      padding: .75rem 1.2rem;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: .15s;
+    }
+
+    .dropdown-item:hover {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    .upc-row {
+      display: flex;
+      gap: 1rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .upc-row:last-child {
+      border-bottom: none;
+    }
+
+    .upc-date-box {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.4rem;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 65px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .upc-date-m {
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .upc-date-d {
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .upc-info {
+      flex: 1;
+    }
+
+    .upc-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .upc-meta {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .upc-map-link {
+      color: var(--sr-color);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .upc-map-link:hover {
+      text-decoration: underline;
+    }
+
+    .prob-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    @media(min-width:600px) {
+      .prob-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .prob-box {
+      background: var(--bg-main);
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .prob-box .label {
+      font-size: .8rem;
+      color: var(--text-secondary);
+    }
+
+    .prob-box .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-top: .2rem;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+
+    .filter-btn {
+      padding: .5rem 1rem;
+      border-radius: 20px;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: .2s;
+      color: var(--text-secondary);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .custom-input {
+      width: 80px;
+      padding: .4rem .8rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: .85rem;
+      outline: none;
+      background: var(--bg-card);
+    }
+
+    .rank-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media(min-width:768px) {
+      .rank-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .rank-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .8rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rank-row:last-child {
+      border-bottom: none;
+    }
+
+    .rank-num {
+      font-weight: 700;
+      color: var(--text-secondary);
+      width: 24px;
+      display: inline-block;
+      font-size: .9rem;
+    }
+
+    .rank-name {
+      font-weight: 600;
+      margin-left: .5rem;
+      flex: 1;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: .2s;
+    }
+
+    .rank-name:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+
+    .rank-pct {
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-left: 1rem;
+    }
+
+    .rank-diff {
+      font-size: .75rem;
+      font-weight: 600;
+      width: 40px;
+      text-align: right;
+    }
+
+    .diff-up {
+      color: var(--up);
+    }
+
+    .diff-dn {
+      color: var(--dn);
+    }
+
+    .diff-eq {
+      color: var(--text-secondary);
+    }
+
+    .event-card {
+      cursor: pointer;
+      display: flex;
+      transition: .2s;
+    }
+
+    .event-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+    }
+
+    .chk-area {
+      padding-right: 1rem;
+      display: flex;
+      align-items: flex-start;
+      margin-top: 2px;
+    }
+
+    .ev-chk {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .ev-content {
+      flex: 1;
+    }
+
+    .ev-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .ev-date {
+      font-size: .85rem;
+      color: var(--text-secondary);
+    }
+
+    .ev-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: .2rem;
+    }
+
+    .ev-note {
+      font-size: .8rem;
+      color: var(--text-secondary);
+      margin-top: .5rem;
+      background: var(--bg-main);
+      padding: 6px 10px;
+      border-radius: 8px;
+      display: block;
+      white-space: pre-line;
+      line-height: 1.6;
+      border: 1px solid var(--border);
+    }
+
+    .note-link {
+      color: var(--sr-color);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: rgba(0, 122, 255, 0.08);
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin: 2px 0;
+    }
+
+    .note-link:hover {
+      background: rgba(0, 122, 255, 0.15);
+      text-decoration: underline;
+    }
+
+    .ev-body {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+
+    .event-card.expanded .ev-body {
+      display: block;
+    }
+
+    .song-line {
+      display: flex;
+      justify-content: space-between;
+      padding: .4rem 0;
+      font-size: .95rem;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .song-line:last-child {
+      border-bottom: none;
+    }
+
+    .encore-tag {
+      color: var(--accent-dark);
+      font-size: .8rem;
+      font-weight: 600;
+      background: var(--accent-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .ev-date-box {
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 0.3rem;
+      border-radius: 10px;
+      text-align: center;
+      min-width: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+
+    .ev-date-m {
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .ev-date-d {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .ev-date-w {
+      font-size: 0.7rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .ev-date-range {
+      font-size: .7rem;
+      opacity: .85;
+      margin-top: 3px;
+      line-height: 1;
+    }
+
+    .ev-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .ev-time {
+      color: var(--sr-color);
+      font-weight: 600;
+    }
+
+    .dg4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media(min-width:600px) {
+      .dg4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .db-box {
+      background: var(--bg-card);
+      padding: 1.5rem 1rem;
+      border-radius: 16px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .title-badge {
+      display: inline-block;
+      padding: .5rem 1.2rem;
+      background: linear-gradient(135deg, var(--accent), #ff8a7f);
+      color: #fff;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 14px rgba(236, 112, 103, .28);
+    }
+
+    .progress-wrap {
+      background: var(--bg-main);
+      border-radius: 20px;
+      height: 16px;
+      width: 100%;
+      overflow: hidden;
+      margin-top: .5rem;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, var(--accent), #ff8a7f);
+      height: 100%;
+      border-radius: 20px;
+      transition: width .6s ease;
+    }
+
+    .sort-bar {
+      display: flex;
+      gap: .5rem;
+    }
+
+    .sort-btn {
+      padding: .4rem .8rem;
+      border-radius: 8px;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      transition: .2s;
+    }
+
+    .sort-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .heard-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .75rem 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .heard-row:last-child {
+      border-bottom: none;
+    }
+
+    .id-history {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: .8rem;
+    }
+
+    .id-chip-btn {
+      padding: .3rem .8rem;
+      border-radius: 20px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      font-size: .8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(236, 112, 103, .2);
+      transition: .15s;
+    }
+
+    .id-chip-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .tech-stock-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media(max-width:600px) {
+      .tech-stock-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stock-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .7rem 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .stock-row:last-child {
+      border-bottom: none;
+    }
+
+    .stock-row:hover .stock-name {
+      color: var(--accent-dark);
+    }
+
+    .stock-price {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .stock-price.high {
+      color: var(--dn);
+    }
+
+    .stock-price.low {
+      color: var(--accent-dark);
+    }
+
+    .mode-bar {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .mode-btn {
+      padding: .5rem 1rem;
+      border-radius: 20px;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: .2s;
+      color: var(--text-secondary);
+    }
+
+    .mode-btn.active {
+      background: var(--text-main);
+      color: #fff;
+      border-color: var(--text-main);
+    }
+
+    .pk-area {
+      margin-bottom: 1rem;
+    }
+
+    .pk-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+
+    .pk-chip {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--accent-light);
+      border: 1px solid rgba(236, 112, 103, .25);
+      border-radius: 20px;
+      padding: .3rem .8rem;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--accent-dark);
+    }
+
+    .pk-chip-x {
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      color: var(--accent-dark);
+      background: none;
+      border: none;
+    }
+
+    .pk-color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .portfolio-header {
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .portfolio-header:hover {
+      opacity: 0.8;
+    }
+
+    .portfolio-chevron {
+      transition: transform 0.3s;
+      display: inline-block;
+    }
+
+    .portfolio-chevron.open {
+      transform: rotate(180deg);
+    }
+
+    .report-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media(max-width:600px) {
+      .report-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-label {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: .4rem;
+      display: block;
+    }
+
+    .setlist-area {
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      min-height: 80px;
+      margin-top: .8rem;
+    }
+
+    .setlist-chips {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .s-chip {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .5rem .8rem;
+      cursor: grab;
+      transition: .15s;
+    }
+
+    .s-chip:active {
+      cursor: grabbing;
+    }
+
+    .s-chip.dragging {
+      opacity: .45;
+      border-style: dashed;
+    }
+
+    .s-chip.dragover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .s-chip-num {
+      min-width: 24px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      font-size: .9rem;
+    }
+
+    .s-chip-name {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .s-chip-encore {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      font-size: .8rem;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+
+    .s-chip-encore input {
+      accent-color: var(--accent);
+    }
+
+    .s-chip-btns {
+      display: flex;
+      gap: .2rem;
+    }
+
+    .s-chip-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 6px;
+      font-size: .8rem;
+      color: var(--text-secondary);
+      transition: .15s;
+    }
+
+    .s-chip-btn:hover {
+      background: var(--border);
+    }
+
+    .s-chip-del {
+      color: var(--dn);
+      border-color: var(--dn);
+    }
+
+    .s-chip-del:hover {
+      background: #FFF1F0;
+    }
+
+    .pending-card {
+      border-left: 4px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+    }
+
+    .pending-dup-tag {
+      background: #FFF8E1;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    #song-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(61, 56, 51, .6);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    #song-modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      width: 100%;
+      max-width: 520px;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .2);
+      max-height: 88vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      background: var(--bg-main);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: .2s;
+    }
+
+    .modal-close:hover {
+      background: var(--border);
+      color: var(--text-main);
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-main);
+      color: #fff;
+      padding: .9rem 1.8rem;
+      border-radius: 24px;
+      font-size: .95rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: .3s;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translate(-50%, -10px);
+    }
+
+    #global-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+      flex-direction: column;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid var(--accent-light);
+      border-left-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      100% {
+        transform: rotate(360deg)
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="global-loader">
+    <div class="spinner"></div>
+    <div style="color:var(--text-secondary);font-weight:500;margin-top:.5rem;">準備好編織你的星空了嗎... ✨</div>
+  </div>
+  <div id="toast"></div>
+
+  <!-- ===== SONG MODAL ===== -->
+  <div id="song-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeSongModal()">✕</button>
+      <h2 id="modal-name" style="margin-bottom:.3rem;padding-right:2rem;"></h2>
+      <div style="margin-bottom:1.5rem;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;">
+        <span id="modal-badge" class="badge"></span>
+        <span id="modal-prob" style="font-weight:600;color:var(--accent-dark);"></span>
+        <span id="modal-cnt" style="color:var(--text-secondary);font-size:.9rem;"></span>
+      </div>
+      <div id="modal-chart-wrap" style="margin-bottom:1.5rem;display:none;">
+        <h4 style="font-size:.85rem;color:var(--text-secondary);margin-bottom:.4rem;font-weight:600;">🎧 現場陪伴與累積次數成長曲線
+        </h4>
+        <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:.6rem;">每一個現場的大合唱，都是這首歌最閃耀的回憶印記！</p>
+        <div style="position:relative;height:160px;"><canvas id="modal-chart"></canvas></div>
+      </div>
+      <h4 style="margin-bottom:.8rem;border-bottom:1px solid var(--border);padding-bottom:.5rem;">出現場次紀錄</h4>
+      <div id="modal-events" style="font-size:.9rem;"></div>
+    </div>
+  </div>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <div class="nav-top-row">
+      <div class="nav-brand">
+        <div>🌊 CRISPY 脆樂團活動</div>
+        <div style="font-size: 0.68rem; color: var(--text-secondary); font-weight: normal; line-height: 1.2;">
+          本站為粉絲自製之非官方無償分享平台，相關公告請以活動官方為主。</div>
+      </div>
+      <div class="nav-profile-btn" data-target="view-journey">
+        <span id="nav-btn-label">👣 我去哪流浪</span>
+      </div>
+    </div>
+    <div class="nav-bottom-row">
+      <div class="nav-links">
+        <div class="nav-item active" data-target="view-home">首頁</div>
+        <div class="nav-item" data-target="view-events">詳細場次</div>
+        <div class="nav-item" data-target="view-report">場次補充</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- ===== HOME ===== -->
+    <div id="view-home" class="view active">
+
+      <div class="card" id="upcoming-widget"
+        style="display:none; background: linear-gradient(to right bottom, var(--bg-card), var(--accent-light)); border-color: rgba(236,112,103,0.2);">
+        <h3 style="color: var(--accent-dark); margin-bottom:0.5rem; display:flex; align-items:center; gap:8px;">
+          跟著脆脆一起走到宇宙的每個角落
+          <span
+            style="font-size:0.8rem; font-weight:600; color:#fff; background:var(--dn); padding:2px 8px; border-radius:12px;">近期活動</span>
+        </h3>
+        <div id="upcoming-list"></div>
+        <button class="btn btn-ghost btn-sm" id="btn-more-upcoming"
+          style="width:100%; margin-top:1rem; display:none;">查看更多場次 ▼</button>
+      </div>
+
+      <h2>歌單統計</h2>
+
+      <div class="card">
+        <h3>🔍 搜尋歌曲機率</h3>
+        <div class="input-group">
+          <input type="text" id="home-search" placeholder="輸入歌曲名稱 (例如: 黑暗的盡頭)" autocomplete="off">
+          <div id="home-search-results" class="dropdown-results"></div>
+        </div>
+        <div id="prob-display" style="display:none;margin-top:1.5rem;">
+          <h3 id="prob-song-title" style="color:var(--accent-dark);margin-bottom:.5rem;cursor:pointer;"
+            onclick="openSongModalFromSearch()"></h3>
+          <div class="prob-grid">
+            <div class="prob-box">
+              <div class="label">最近 4 場</div>
+              <div class="value" id="prob-4">0%</div>
+            </div>
+            <div class="prob-box">
+              <div class="label">最近 8 場</div>
+              <div class="value" id="prob-8">0%</div>
+            </div>
+            <div class="prob-box">
+              <div class="label">最近 12 場</div>
+              <div class="value" id="prob-12">0%</div>
+            </div>
+            <div class="prob-box">
+              <div class="label">總場次</div>
+              <div class="value" id="prob-total">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-bar" id="home-filters">
+        <div class="filter-btn active" data-val="4">最近 4 場 (與總場次比對)</div>
+        <div class="filter-btn" data-val="8">最近 8 場</div>
+        <div class="filter-btn" data-val="12">最近 12 場</div>
+        <div style="display:flex;align-items:center;margin-left:.5rem;">
+          <span style="font-size:.85rem;margin-right:.5rem;color:var(--text-secondary);">自訂:</span>
+          <input type="number" id="custom-n" class="custom-input" min="1" placeholder="N 場">
+        </div>
+      </div>
+      <div id="home-content"></div>
+    </div>
+
+    <!-- ===== EVENTS ===== -->
+    <div id="view-events" class="view">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1rem;">
+        <div>
+          <h2>詳細場次紀錄</h2>
+          <p style="color:var(--text-secondary);">勾選您參與過的每一場精彩演出，記錄屬於您的音樂冒險！✨</p>
+        </div>
+        <div id="events-login-status" style="font-size:.85rem;font-weight:600;color:var(--accent-dark);">未登入</div>
+      </div>
+      <div id="events-msg"
+        style="color:var(--dn);font-weight:500;font-size:.95rem;margin-bottom:1rem;min-height:1.5rem;"></div>
+      <div style="text-align:right;margin-bottom:1.5rem;position:sticky;top:105px;z-index:100;">
+        <button class="btn" id="btn-save-events">💾 儲存場次紀錄</button>
+      </div>
+      <div id="events-list"></div>
+    </div>
+
+    <!-- ===== TECH (金曲交易所 - 彩蛋隱藏版) ===== -->
+    <div id="view-tech" class="view">
+      <h2>📈 脆樂團金曲交易所 <span
+          style="font-size:0.75rem; background:var(--accent-light); color:var(--accent-dark); padding:3px 8px; border-radius:12px; border:1px solid var(--accent); vertical-align:middle;">🔧
+          開發中彩蛋</span></h2>
+      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">探索每首歌曲的珍藏指數與熱力加成！結合 R、SR、SSR、SSSR
+        稀有評級與連續熱力，為您的現場回憶賦予閃耀的感動積分！</p>
+
+      <div
+        style="background: var(--accent-light); border: 1.5px dashed var(--accent); border-radius: 12px; padding: 0.9rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--accent-dark); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6;">
+        <span style="font-size: 1.2rem; flex-shrink: 0;">✨</span>
+        <div>
+          <b>溫馨應援提醒：</b>本「交易所」為樂迷專屬的心靈娛樂與回憶收藏園地，充滿正能量與滿分的愛！<br>「聽團的每一刻都是無價之寶，本金是青春與熱血，利息是無限感動與多巴胺！帶著愉快的心情，繼續沈浸在脆樂團的音樂宇宙裡吧！」
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <div id="tech-portfolio-content"></div>
+        <div id="portfolio-detail-list"
+          style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border);"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <h3 style="margin-bottom:.5rem;">🗺️ 脆樂大盤指數 (單場總感動積分走勢)</h3>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">記錄每一場演出的感動總和與能量高峰，專場演出總是特別震撼！</p>
+        <div style="position:relative;height:250px;"><canvas id="tech-market-chart"></canvas></div>
+      </div>
+
+      <div class="tech-stock-grid">
+        <div class="card">
+          <h3 style="color:var(--dn);margin-bottom:1rem;">💎 夢幻珍藏金曲 Top 5</h3>
+          <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:1rem;">稀有機率出現的珍貴好歌（依感動積分排序）</p>
+          <div id="tech-rare-top5"></div>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--accent-dark);margin-bottom:1rem;">🎵 國民傳唱金曲 Top 5</h3>
+          <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:1rem;">大家最耳熟能詳的親民好歌（依演出次數排序，顯示感動積分）
+          </p>
+          <div id="tech-common-top5"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:1rem;">選擇歌曲進行深度分析</h3>
+        <div class="input-group">
+          <input type="text" id="tech-search" placeholder="點擊或輸入歌曲名稱…" autocomplete="off" readonly
+            onfocus="this.removeAttribute('readonly')" onclick="showTechSearchAll()">
+          <div id="tech-search-results" class="dropdown-results"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="mode-bar" id="tech-mode-bar">
+          <div class="mode-btn active" data-mode="single">📈 單曲成長走勢</div>
+          <div class="mode-btn" data-mode="pk">⚔️ 多曲 PK 競技場</div>
+        </div>
+
+        <div id="pk-area" class="pk-area" style="display:none;">
+          <div style="font-size:.85rem;color:var(--text-secondary);margin-bottom:.4rem;">選擇最多 3 首歌進行並肩對比（已選: <span
+              id="pk-count">0</span>/3）：</div>
+          <div class="input-group" style="margin-bottom:.5rem;">
+            <input type="text" id="pk-search" placeholder="搜尋並新增比對歌曲…" autocomplete="off">
+            <div id="pk-search-results" class="dropdown-results"></div>
+          </div>
+          <div class="pk-chips" id="pk-chips"></div>
+        </div>
+
+        <h3 id="tech-chart-title" style="margin-bottom:1rem;font-size:1rem;"></h3>
+        <div style="position:relative;height:300px;"><canvas id="tech-main-chart"></canvas></div>
+      </div>
+
+      <!-- 金曲雙核心儀表板 -->
+      <div id="tech-indicators" class="tech-stock-grid">
+        <div class="indicator-card">
+          <div style="font-size:.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:.3rem;">珍藏指數 (基底)</div>
+          <div class="indicator-val" id="tech-rarity-price" style="color:#AF52DE;">$-</div>
+          <div style="font-size:.8rem;color:var(--text-secondary);">依稀有度與未出現率加權</div>
+        </div>
+        <div class="indicator-card">
+          <div style="font-size:.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:.3rem;">熱力加成 (熱動能)
+          </div>
+          <div class="indicator-val" id="tech-combo-bonus" style="color:#ec7067;">$-</div>
+          <div style="font-size:.8rem;color:var(--text-secondary);">現場熱血動能 (動能: <span id="tech-momentum-val"
+              style="font-weight:700;">0</span>)</div>
+        </div>
+        <div class="indicator-card full-span">
+          <div>
+            <div style="font-size:.85rem;font-weight:600;color:var(--accent-dark);margin-bottom:.3rem;">感動積分總價值</div>
+            <div class="indicator-val" id="tech-total-price" style="color:var(--text-main); margin:0;">$-</div>
+          </div>
+          <div id="tech-signal" class="sig-badge sig-neutral" style="margin:0;">-</div>
+        </div>
+      </div>
+
+      <div class="card" id="tech-comment-card">
+        <h3 style="margin-bottom:.8rem;">🤖 AI 應援分析評語</h3>
+        <p id="tech-comment" style="color:var(--text-main);line-height:1.8;"></p>
+      </div>
+    </div>
+
+    <!-- ===== JOURNEY (我去哪流浪) ===== -->
+    <div id="view-journey" class="view">
+      <div id="journey-auth" style="text-align:center;max-width:420px;margin:0 auto;padding-top:2rem;">
+        <h2>和脆脆一起離開與到來</h2>
+        <p style="color:var(--text-secondary);margin-bottom:2rem;">建立或輸入專屬 ID，解鎖屬於您的音樂足跡與成就！✨</p>
+        <div class="card">
+          <h3 style="font-size:1rem;margin-bottom:1rem;">我有專屬 ID</h3>
+          <div style="display:flex;gap:.5rem;">
+            <input type="text" id="login-id" placeholder="輸入 ID (例: CR-A1B2)" style="flex:1;text-transform:uppercase;">
+            <button class="btn" id="btn-login">登入</button>
+          </div>
+          <div id="login-history-area" style="margin-top:.8rem;display:none;">
+            <div style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.4rem;">快速登入：</div>
+            <div class="id-history" id="login-history-chips"></div>
+          </div>
+        </div>
+        <div style="margin:2rem 0;color:var(--text-secondary);position:relative;text-align:center;">
+          <span style="background:var(--bg-main);padding:0 10px;position:relative;z-index:1;">或是</span>
+          <div style="position:absolute;top:50%;left:0;right:0;border-top:1px solid var(--border);z-index:0;"></div>
+        </div>
+        <button class="btn btn-outline" id="btn-start-create" style="width:100%;">建立新的專屬 ID</button>
+      </div>
+
+      <div id="journey-dashboard" style="display:none;text-align:center;">
+        <div class="title-badge" id="journey-title">初階脆粉</div>
+        <h2 style="margin-bottom:.5rem;">專屬 ID: <span id="display-user-id" style="color:var(--accent-dark);"></span>
+        </h2>
+
+        <div class="card" style="margin-bottom:1.5rem;padding:1rem 1.5rem;text-align:left;">
+          <h3 style="font-size:.95rem;margin-bottom:.5rem;">🏷️ 設定脆粉暱稱</h3>
+          <div style="display:flex;gap:.5rem;">
+            <input type="text" id="user-nickname-input" placeholder="輸入您的暱稱 (留空則顯示 ID)" style="flex:1;">
+            <button class="btn btn-sm" id="btn-save-nickname">儲存暱稱</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:1.5rem;padding:1rem 1.5rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:.5rem;">
+            <div style="font-size:.9rem;color:var(--text-secondary);font-weight:500;">現場解鎖進度</div>
+            <div style="font-weight:700;color:var(--accent-dark);"><span id="dash-prog-cnt">0</span> / <span
+                id="dash-total-cnt">0</span> 場</div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-bar" id="dash-prog-bar" style="width:0%;"></div>
+          </div>
+        </div>
+
+        <div class="dg4">
+          <div class="db-box" style="cursor:pointer; transition:.2s;" onclick="toggleAttendedEvents()"
+            id="attended-box">
+            <div
+              style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;display:flex;justify-content:center;align-items:center;gap:4px;">
+              參與場次 <span id="attended-chevron" class="portfolio-chevron" style="font-size:.8rem;">▼</span>
+            </div>
+            <div style="font-size:2.3rem;font-weight:700;line-height:1;color:var(--accent-dark);" id="dash-events">0
+            </div>
+          </div>
+          <div class="db-box">
+            <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;">🎵 共聽過</div>
+            <div style="font-size:2.3rem;font-weight:700;line-height:1;" id="dash-heard-songs-total">0</div>
+            <div style="font-size:.75rem;color:var(--text-secondary);margin-top:.2rem;">首歌曲</div>
+          </div>
+          <div class="db-box">
+            <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;">⏳ 共參與</div>
+            <div style="font-size:1.8rem;font-weight:700;line-height:1.2;color:var(--sr-color);" id="dash-time-total">0
+              分鐘</div>
+          </div>
+          <div class="db-box">
+            <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;">🔒 待解鎖</div>
+            <div style="font-size:2.3rem;font-weight:700;line-height:1;" id="dash-unlocked-cnt">0</div>
+            <div style="font-size:.75rem;color:var(--text-secondary);margin-top:.2rem;">首期待相遇的歌</div>
+          </div>
+        </div>
+
+        <div class="card" id="attended-detail-card" style="display:none; text-align:left; margin-bottom:1.5rem;">
+          <h3 style="margin-bottom:.8rem;">🎫 我的參與場次紀錄</h3>
+          <div id="dash-attended-events-list"></div>
+        </div>
+
+        <div class="card" style="text-align:left;margin-bottom:1.5rem;">
+          <h3 style="margin-bottom:.8rem;">🔒 尚未相遇的歌</h3>
+          <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem;">期待下次現場與它們不期而遇！依出現機率由高到低排列</p>
+          <div id="dash-unlocked-songs"></div>
+        </div>
+
+        <div class="card" style="text-align:left;">
+          <div
+            style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
+            <h3 style="margin-bottom:0;">🎧 您的金曲收藏庫</h3>
+            <div class="sort-bar">
+              <button class="sort-btn" id="sort-pct-btn" onclick="setHeardSort('pct')">出現率 ↑</button>
+              <button class="sort-btn active" id="sort-cnt-btn" onclick="setHeardSort('count')">聽過次數 ↓</button>
+            </div>
+          </div>
+          <div id="dash-heard-songs"></div>
+        </div>
+
+        <div style="display:flex;gap:1rem;justify-content:center;margin-bottom:2rem;">
+          <button class="btn" id="btn-edit-events" style="flex:1;">📝 編輯場次</button>
+          <button class="btn btn-ghost" id="btn-logout" style="flex:1;">登出</button>
+        </div>
+
+        <!-- 🔧 金曲交易所隱藏彩蛋按鈕 -->
+        <div style="margin-top:3rem; padding-top:1.5rem; border-top:1px dashed var(--border); text-align:center;">
+          <button class="btn btn-ghost btn-sm" onclick="switchTab('view-tech')"
+            style="color:var(--text-secondary); border-color:var(--border);">
+            📈 探索金曲交易所 (開發中彩蛋) 🔮
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REPORT ===== -->
+    <div id="view-report" class="view">
+      <h2>📝 場次補充回報</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">感謝您熱心回報完整歌單，讓脆樂團的音樂回憶更加完整！✨</p>
+      <div class="card">
+        <h3 style="margin-bottom:1.5rem;">✏️ 填寫場次資訊</h3>
+
+        <div class="report-form-grid">
+          <div><label class="form-label">活動日期 *</label><input type="text" id="rpt-date" placeholder="例: 20260816"
+              maxlength="8"></div>
+          <div><label class="form-label">活動名稱 *</label><input type="text" id="rpt-name" placeholder="例: 新北 河海音樂季">
+          </div>
+        </div>
+
+        <div class="report-form-grid" style="margin-top:1rem;">
+          <div><label class="form-label">表演時間（選填）</label><input type="text" id="rpt-time" placeholder="例: 19:30 - 20:00">
+          </div>
+          <div><label class="form-label">其他備註（選填）</label><input type="text" id="rpt-note" placeholder="例: 售票場次、ft. 嘉賓">
+          </div>
+        </div>
+
+        <div class="report-form-grid" style="margin-top:1rem;">
+          <div><label class="form-label">脆粉名稱（選填）</label><input type="text" id="rpt-submitter"
+              placeholder="可留空，將以「熱心脆粉」代稱"></div>
+        </div>
+
+        <div style="margin-top:1.5rem;">
+          <label class="form-label">🎵 表演歌單</label>
+          <div class="input-group">
+            <input type="text" id="rpt-song-search" placeholder="搜尋歌曲名稱並新增…" autocomplete="off">
+            <div id="rpt-song-results" class="dropdown-results"></div>
+          </div>
+          <div class="setlist-area" id="setlist-area">
+            <div id="setlist-empty"
+              style="color:var(--text-secondary);text-align:center;padding:1rem 0;font-size:.9rem;">尚未新增歌曲，請使用上方搜尋框加入
+            </div>
+            <div class="setlist-chips" id="setlist-chips"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+          <button class="btn" id="btn-submit-report" onclick="submitReport()">📤 提交回報</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearReportForm()">清除重填</button>
+        </div>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
+      <h3 style="margin-bottom:1rem;">⏳ 待審核場次</h3>
+      <div id="pending-list">
+        <div style="color:var(--text-secondary);text-align:center;padding:2rem 0;">載入中…</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer
+    style="max-width: 960px; margin: 2rem auto; padding: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-secondary); border-top: 1px solid var(--border);">
+    <div style="margin-bottom: 0.3rem;">改版時間：20260809</div>
+    <div>本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄 」網站，原始架構開發者：<a
+        href="https://www.threads.com/@blues_.g" target="_blank"
+        style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">blues</a>（已獲授權使用）</div>
+  </footer>
+
+  <script>
+    // 🔗 您的 GAS 對外公開 API 網址
+    const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbys0ZJcYCmseTBwkESSebsa3Nu3E3zdMryAK2c8UKNA8Ai6Cd5bPFdecRXacfilEtaf/exec';
+
+    let appData = { songs: [], events: [], upcoming: [], totalEvents: 0 };
+    let currentUser = null;
+    let currentSearchSong = '';
+    let heardSortMode = 'count';
+    let heardSortDir = -1;
+    let heardSongs = [];
+    let globalSongStats = null;
+
+    let techCurrentSong = '';
+    let techChartMode = 'single';
+    let pkSongs = [];
+    let techChartInst = null;
+    let marketChartInst = null;
+    let modalChartInst = null;
+    const PK_COLORS = ['#ec7067', '#007AFF', '#34C759'];
+    let techInited = false;
+
+    let reportSetlist = [];
+    let dragSrcIdx = null;
+
+    const LS_HISTORY = 'crispy_id_history';
+    const LS_AUTO = 'crispy_current_id';
+    let showAllUpcoming = false;
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+    function getRarity(pct) {
+      if (pct >= 71) return 'R';
+      if (pct >= 41) return 'SR';
+      if (pct >= 11) return 'SSR';
+      return 'SSSR';
+    }
+    function esc(str) { return str.replace(/'/g, "\\'"); }
+
+    function formatNoteWithLinks(noteStr) {
+      if (!noteStr) return '';
+      let escaped = noteStr
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      const regex = /([^\n：:]+[：:]\s*)(https?:\/\/[^\s]+)/g;
+      let formatted = escaped.replace(regex, (match, label, url) => {
+        let cleanLabel = label.replace(/[：:]\s*$/, '').trim();
+        return `<a href="${url}" target="_blank" class="note-link">🔗 ${cleanLabel}</a>`;
+      });
+
+      return formatted.replace(/\n/g, '<br>');
+    }
+
+    function formatUpcDate(dStr) {
+      if (dStr && dStr.length === 8) {
+        const y = parseInt(dStr.substring(0, 4), 10);
+        const m = parseInt(dStr.substring(4, 6), 10);
+        const d = parseInt(dStr.substring(6, 8), 10);
+        const dateObj = new Date(y, m - 1, d);
+        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+        const w = weekdays[dateObj.getDay()];
+        return { m, d, w };
+      }
+      return { m: '-', d: dStr, w: '' };
+    }
+
+    function formatSingleDate(dStr) {
+      if (!dStr || dStr.length !== 8) return dStr;
+      const y = dStr.substring(0, 4);
+      const m = parseInt(dStr.substring(4, 6), 10);
+      const d = parseInt(dStr.substring(6, 8), 10);
+      const dateObj = new Date(parseInt(y, 10), m - 1, d);
+      const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+      const w = weekdays[dateObj.getDay()];
+      return `${y}/${m.toString().padStart(2, '0')}/${d.toString().padStart(2, '0')} (${w})`;
+    }
+
+    function formatEventDate(dStr) {
+      if (!dStr) return '';
+      if (dStr.includes('-')) {
+        const parts = dStr.split('-').map(s => s.trim());
+        if (parts.length === 2 && parts[0].length === 8 && parts[1].length === 8) {
+          return `${formatSingleDate(parts[0])} ~ ${formatSingleDate(parts[1])}`;
+        }
+      }
+      return formatSingleDate(dStr);
+    }
+
+    document.querySelectorAll('.nav-item').forEach(n =>
+      n.addEventListener('click', e => switchTab(e.target.getAttribute('data-target')))
+    );
+    document.querySelectorAll('.nav-profile-btn').forEach(n =>
+      n.addEventListener('click', e => switchTab(e.currentTarget.getAttribute('data-target')))
+    );
+
+    function switchTab(id) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const navEl = document.querySelector(`.nav-item[data-target="${id}"]`);
+      if (navEl) navEl.classList.add('active');
+
+      const profileBtn = document.querySelector('.nav-profile-btn');
+      if (profileBtn) {
+        if (profileBtn.getAttribute('data-target') === id) profileBtn.classList.add('active');
+        else profileBtn.classList.remove('active');
+      }
+
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const targetView = document.getElementById(id);
+      if (targetView) targetView.classList.add('active');
+      window.scrollTo(0, 0);
+
+      if (id === 'view-tech') initTechView();
+      if (id === 'view-report') loadPendingEvents();
+    }
+
+    // 🚀 改用 Fetch 向 GAS 請求資料
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch(GAS_API_URL)
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            appData = buildAppData(data);
+            initApp();
+          } else if (data && data.success) {
+            appData = data; // 相容日後若後端改回傳 {success, songs, events, upcoming} 格式
+            initApp();
+          } else {
+            document.getElementById('global-loader').style.display = 'none';
+            alert('載入失敗: ' + (data && data.error ? data.error : '資料格式無法辨識'));
+          }
+        })
+        .catch(err => {
+          document.getElementById('global-loader').style.display = 'none';
+          alert('伺服器連線錯誤: ' + err);
+        });
+    });
+
+    // 🧩 把 GAS 回傳的「純陣列」事件資料，轉換成本站架構需要的 appData 格式
+    function buildAppData(events) {
+      const today = new Date();
+      const todayStr = `${today.getFullYear()}${String(today.getMonth() + 1).padStart(2, '0')}${String(today.getDate()).padStart(2, '0')}`;
+
+      const norm = events.map(ev => ({
+        ...ev,
+        setlist: (ev.setlist || []).map(s => ({
+          orderStr: s.orderStr,
+          songName: s.songName,
+          isEncore: !!s.isEncore
+        }))
+      }));
+
+      const songSet = new Set();
+      norm.forEach(ev => ev.setlist.forEach(s => songSet.add(s.songName)));
+
+      const upcoming = norm
+        .filter(ev => (ev.date || '').split('-')[0].trim() >= todayStr)
+        .sort((a, b) => a.date.split('-')[0].trim().localeCompare(b.date.split('-')[0].trim()))
+        .map(ev => ({
+          id: ev.id,
+          date: ev.date.split('-')[0].trim(),
+          endDate: ev.date.includes('-') ? ev.date.split('-')[1].trim() : null,
+          name: ev.name,
+          time: ev.timeStr || '時間未定',
+          location: ev.location || '地點未定',
+          mapLink: ev.mapLink || null,
+          ticket: ev.ticket,
+          ticketLink: ev.ticketLink || null,
+          note: ev.note
+        }));
+
+      return { songs: [...songSet], events: norm, upcoming, totalEvents: norm.length };
+    }
+
+    function initApp() {
+      document.getElementById('global-loader').style.display = 'none';
+      globalSongStats = null;
+      setupHomeSearch();
+      setupReportSongSearch();
+      renderUpcomingEvents();
+      renderEventsList();
+      renderHome(4);
+      loadLoginHistory();
+      tryAutoLogin();
+    }
+
+    function renderUpcomingEvents() {
+      const widget = document.getElementById('upcoming-widget');
+      const listEl = document.getElementById('upcoming-list');
+      const btnMore = document.getElementById('btn-more-upcoming');
+
+      if (!appData.upcoming || appData.upcoming.length === 0) {
+        widget.style.display = 'none';
+        return;
+      }
+      widget.style.display = 'block';
+
+      let itemsToShow = showAllUpcoming ? appData.upcoming : appData.upcoming.slice(0, 3);
+
+      listEl.innerHTML = itemsToShow.map(u => {
+        const dFormat = formatUpcDate(u.date);
+        const endFormat = u.endDate ? formatUpcDate(u.endDate) : null;
+        const ticketHtml = u.ticket
+          ? (u.ticketLink
+            ? `<a href="${u.ticketLink}" target="_blank" class="upc-map-link">🎫 需購票</a>`
+            : `<span>🎫 需購票</span>`)
+          : `<span>🎫 免費入場</span>`;
+        return `
+          <div class="upc-row" data-id="${u.id}" style="cursor:pointer;">
+            <div class="upc-date-box">
+              <div class="upc-date-m">${dFormat.m}月</div>
+              <div class="upc-date-d">${dFormat.d}</div>
+              <div style="font-size:0.7rem; font-weight:600; line-height:1; margin-top:2px;">(${dFormat.w})</div>
+              ${endFormat ? `<div style="font-size:0.65rem; opacity:.85; margin-top:2px; line-height:1;">~${endFormat.m}/${endFormat.d}</div>` : ''}
+            </div>
+            <div class="upc-info">
+              <div class="upc-title">${u.name}</div>
+              <div class="upc-meta">
+                <span>🕒 ${u.time}</span>
+                <span style="color:var(--border);">|</span>
+                ${u.mapLink ? `<a href="${u.mapLink}" target="_blank" class="upc-map-link">📍 ${u.location}</a>` : `<span>📍 ${u.location}</span>`}
+                <span style="color:var(--border);">|</span>
+                ${ticketHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      listEl.querySelectorAll('.upc-row').forEach(row => {
+        row.addEventListener('click', e => {
+          if (e.target.closest('a')) return; // 讓地圖/購票連結自己開新分頁，不要被攔截去切頁籤
+          const id = row.getAttribute('data-id');
+          switchTab('view-events');
+          setTimeout(() => {
+            const card = document.querySelector(`.event-card[data-id="${id}"]`);
+            if (card) {
+              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              card.classList.add('expanded');
+              card.style.boxShadow = '0 0 0 3px var(--accent)';
+              setTimeout(() => { card.style.boxShadow = ''; }, 1500);
+            }
+          }, 50);
+        });
+      });
+
+      if (appData.upcoming.length > 3) {
+        btnMore.style.display = 'block';
+        btnMore.innerText = showAllUpcoming ? '收起列表 ▲' : `查看更多 (${appData.upcoming.length} 場) ▼`;
+        btnMore.onclick = () => {
+          showAllUpcoming = !showAllUpcoming;
+          renderUpcomingEvents();
+        };
+      } else {
+        btnMore.style.display = 'none';
+      }
+    }
+
+    function getChronologicalEvents() {
+      return appData.events.filter(e => e.setlist.length > 0).slice().sort((a, b) => a.date.localeCompare(b.date));
+    }
+
+    function buildAllSongStats() {
+      const evs = getChronologicalEvents();
+      const stats = {};
+      appData.songs.forEach(s => {
+        stats[s] = { count: 0, momentum: 0, history: [] };
+      });
+
+      evs.forEach((ev, idx) => {
+        const eventSongs = new Set(ev.setlist.map(s => s.songName));
+        const totalEvtsSoFar = idx + 1;
+
+        appData.songs.forEach(s => {
+          if (eventSongs.has(s)) {
+            stats[s].count += 1;
+            stats[s].momentum += 1;
+          } else {
+            stats[s].momentum = Math.max(0, stats[s].momentum - 5);
+          }
+
+          const pct = Math.round((stats[s].count / totalEvtsSoFar) * 100);
+
+          let tierMultiplier = 1.0;
+          if (pct >= 71) tierMultiplier = 1.0;
+          else if (pct >= 41) tierMultiplier = 1.4;
+          else if (pct >= 11) tierMultiplier = 2.0;
+          else tierMultiplier = 3.0;
+
+          const earlyDamping = totalEvtsSoFar < 6 ? (totalEvtsSoFar / 6.0) : 1.0;
+
+          const rarityPrice = Math.round((80 + 0.25 * Math.pow(100 - pct, 2) * earlyDamping) * tierMultiplier);
+          const comboBonus = Math.round(1.2 * Math.pow(stats[s].momentum, 2) * tierMultiplier * earlyDamping);
+          const accumBonus = stats[s].count * 12;
+          const totalPrice = rarityPrice + comboBonus + accumBonus;
+
+          stats[s].history.push({
+            totalEvents: totalEvtsSoFar,
+            count: stats[s].count,
+            pct: pct,
+            momentum: stats[s].momentum,
+            rarityPrice: rarityPrice,
+            comboBonus: comboBonus,
+            accumBonus: accumBonus,
+            totalPrice: totalPrice
+          });
+        });
+      });
+      return stats;
+    }
+
+    function getGlobalSongStats() {
+      if (!globalSongStats) globalSongStats = buildAllSongStats();
+      return globalSongStats;
+    }
+
+    function getValidEvents() { return appData.events.filter(e => e.setlist.length > 0); }
+
+    function calcProbs(n) {
+      const valid = getValidEvents();
+      const target = valid.slice(0, n);
+      const total = target.length;
+      if (!total) return [];
+
+      let counts = {};
+      appData.songs.forEach(s => counts[s] = 0);
+      target.forEach(ev => {
+        new Set(ev.setlist.map(s => s.songName)).forEach(song => {
+          if (counts[song] !== undefined) counts[song]++;
+        });
+      });
+
+      let result = Object.keys(counts).map(song => {
+        const pct = Math.round((counts[song] / total) * 100);
+        return { name: song, count: counts[song], pctVal: pct, rarity: getRarity(pct) };
+      });
+      result.sort((a, b) => b.pctVal - a.pctVal);
+      result.forEach((r, i) => r.rank = i + 1);
+      return result;
+    }
+
+    function getSongStats(songName) {
+      const validN = getValidEvents().length;
+      const p4 = calcProbs(4).find(s => s.name === songName);
+      const p8 = calcProbs(8).find(s => s.name === songName);
+      const p12 = calcProbs(12).find(s => s.name === songName);
+      const pA = calcProbs(validN).find(s => s.name === songName);
+      return {
+        recent4: p4 ? p4.pctVal : 0,
+        recent8: p8 ? p8.pctVal : 0,
+        recent12: p12 ? p12.pctVal : 0,
+        total: pA ? pA.pctVal : 0,
+        count: pA ? pA.count : 0,
+        rarity: pA ? pA.rarity : 'N'
+      };
+    }
+
+    function setupHomeSearch() {
+      const input = document.getElementById('home-search');
+      const results = document.getElementById('home-search-results');
+      input.addEventListener('input', () => {
+        const val = input.value.trim().toLowerCase();
+        if (!val) { results.style.display = 'none'; return; }
+        renderDropdown(results, appData.songs.filter(s => s.toLowerCase().includes(val)), song => {
+          input.value = song;
+          results.style.display = 'none';
+          showProbabilities(song);
+        });
+      });
+      document.addEventListener('click', e => { if (e.target !== input) results.style.display = 'none'; });
+    }
+    function renderDropdown(container, songs, onSelect) {
+      container.innerHTML = '';
+      if (!songs.length) { container.style.display = 'none'; return; }
+      container.style.display = 'block';
+      songs.forEach(song => {
+        const d = document.createElement('div');
+        d.className = 'dropdown-item';
+        d.innerText = song;
+        d.addEventListener('click', e => { e.stopPropagation(); onSelect(song); });
+        container.appendChild(d);
+      });
+    }
+    function showProbabilities(songName) {
+      currentSearchSong = songName;
+      const st = getSongStats(songName);
+      document.getElementById('prob-display').style.display = 'block';
+      document.getElementById('prob-song-title').innerHTML = `${songName} <span class="badge ${st.rarity}" style="vertical-align:middle;margin-left:8px;">${st.rarity}</span> <span style="font-size:.8rem;color:var(--text-secondary);font-weight:normal;">(點擊看詳情)</span>`;
+      document.getElementById('prob-4').innerText = st.recent4 + '%';
+      document.getElementById('prob-8').innerText = st.recent8 + '%';
+      document.getElementById('prob-12').innerText = st.recent12 + '%';
+      document.getElementById('prob-total').innerText = st.total + '%';
+    }
+    function openSongModalFromSearch() { if (currentSearchSong) openSongModal(currentSearchSong); }
+
+    function openSongModal(songName) {
+      songName = songName.trim();
+      const st = getSongStats(songName);
+      document.getElementById('modal-name').innerText = songName;
+      document.getElementById('modal-badge').className = `badge ${st.rarity}`;
+      document.getElementById('modal-badge').innerText = st.rarity;
+      document.getElementById('modal-prob').innerText = `總場次機率 ${st.total}%`;
+      document.getElementById('modal-cnt').innerText = `(共出現 ${st.count} 次)`;
+
+      let html = '';
+      appData.events.forEach(ev => {
+        const m = ev.setlist.find(s => s.songName === songName);
+        if (m) html += `
+      <div style="padding:.6rem 0;border-bottom:1px dashed var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:.8rem;color:var(--text-secondary);">${formatEventDate(ev.date)}</div>
+          <div style="font-weight:500;">${ev.name}</div>
+        </div>
+        <div style="font-weight:700;color:var(--accent-dark);text-align:right;">
+          第 ${m.orderStr} 首${m.isEncore ? '<br><span style="font-size:.75rem;background:var(--accent-light);padding:2px 4px;border-radius:4px;">安可</span>' : ''}
+        </div>
+      </div>`;
+      });
+      document.getElementById('modal-events').innerHTML = html || '<div style="color:var(--text-secondary);padding:1rem 0;text-align:center;">期待下次現場相遇！</div>';
+      drawModalChart(songName);
+      document.getElementById('song-modal').classList.add('show');
+    }
+    function closeSongModal() { document.getElementById('song-modal').classList.remove('show'); }
+
+    function drawModalChart(songName) {
+      const evs = getChronologicalEvents();
+      const sData = getGlobalSongStats()[songName];
+      if (!sData) return;
+
+      const accumData = sData.history.map(h => h.count);
+
+      document.getElementById('modal-chart-wrap').style.display = 'block';
+
+      const ctx = document.getElementById('modal-chart').getContext('2d');
+      if (modalChartInst) modalChartInst.destroy();
+
+      modalChartInst = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: evs.map(ev => ev.date.slice(4)),
+          datasets: [
+            { label: '累積次數', data: accumData, borderColor: '#AF52DE', backgroundColor: 'rgba(175,82,222,0.1)', borderWidth: 3, pointRadius: 3, fill: true, tension: 0.3 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'top', labels: { font: { size: 10 } } }, tooltip: { mode: 'index', intersect: false } },
+          scales: {
+            x: { ticks: { font: { size: 10 }, maxTicksLimit: 6, callback: function (val) { let label = this.getLabelForValue(val); return label.length > 8 ? label.slice(0, 8) + '...' : label; } }, grid: { display: false } },
+            y: { min: 0, title: { display: true, text: '累積次數' }, ticks: { stepSize: 5 } }
+          }
+        }
+      });
+    }
+
+    function renderHome(n) {
+      const probsN = calcProbs(n);
+      const probsAll = calcProbs(getValidEvents().length);
+      const rankMapN = {};
+      probsN.forEach(p => rankMapN[p.name] = p.rank);
+
+      const leftHtml = probsN.map(p => `
+    <div class="rank-row">
+      <div style="display:flex;align-items:center;flex:1;"><span class="rank-num">${p.rank}</span><span class="rank-name" onclick="openSongModal('${esc(p.name)}')">${p.name}</span></div>
+      <div class="rank-pct">${p.pctVal}%</div>
+    </div>`).join('');
+
+      const rightHtml = probsAll.map(p => {
+        const old = rankMapN[p.name];
+        let diff = old ? old - p.rank : null;
+        let diffHtml = diff === null ? `<span class="rank-diff diff-eq">NEW</span>` : diff > 0 ? `<span class="rank-diff diff-up">▲ ${diff}</span>` : diff < 0 ? `<span class="rank-diff diff-dn">▼ ${Math.abs(diff)}</span>` : `<span class="rank-diff diff-eq">-</span>`;
+        return `
+      <div class="rank-row">
+        <div style="display:flex;align-items:center;flex:1;"><span class="rank-num">${p.rank}</span><span class="rank-name" onclick="openSongModal('${esc(p.name)}')">${p.name}</span></div>
+        <div style="display:flex;align-items:center;"><div class="rank-pct" style="margin-right:.8rem;">${p.pctVal}%</div>${diffHtml}</div>
+      </div>`;
+      }).join('');
+
+      document.getElementById('home-content').innerHTML = `
+    <div class="rank-grid">
+      <div class="card"><h3 style="margin-bottom:1.5rem;text-align:center;color:var(--accent-dark);">最近 ${n} 場機率排行</h3>${leftHtml}</div>
+      <div class="card"><h3 style="margin-bottom:1.5rem;text-align:center;color:var(--accent-dark);">總場次機率排行</h3>${rightHtml}</div>
+    </div>`;
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        document.getElementById('custom-n').value = '';
+        const val = parseInt(e.target.getAttribute('data-val'));
+        e.target.innerText = `最近 ${val} 場 (與總場次比對)`;
+        document.querySelectorAll('.filter-btn').forEach(b => { if (b !== e.target) b.innerText = `最近 ${b.getAttribute('data-val')} 場`; });
+        renderHome(val);
+      });
+    });
+    document.getElementById('custom-n').addEventListener('input', e => {
+      const val = parseInt(e.target.value);
+      if (val > 0) {
+        document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active'); b.innerText = `最近 ${b.getAttribute('data-val')} 場`; });
+        renderHome(val);
+      }
+    });
+
+    function renderEventsList() {
+      const container = document.getElementById('events-list');
+      container.innerHTML = '';
+      [...appData.events].reverse().forEach(ev => {
+        const card = document.createElement('div');
+        card.className = 'card event-card';
+        card.setAttribute('data-id', ev.id);
+        const checked = currentUser && currentUser.attendedIds.includes(ev.id) ? 'checked' : '';
+
+        const startDate = (ev.date || '').split('-')[0].trim();
+        const endDate = (ev.date || '').includes('-') ? (ev.date || '').split('-')[1].trim() : null;
+        const dBox = formatUpcDate(startDate);
+        const endBox = endDate ? formatUpcDate(endDate) : null;
+
+        let bodyHtml = '';
+        if (!ev.setlist.length) {
+          bodyHtml = `<div style="text-align:center;padding:1rem 0;color:var(--text-secondary);">
+        <span style="font-weight:600;color:var(--accent-dark);">尚未公開歌單</span></div>`;
+        } else {
+          bodyHtml = ev.setlist.map(s => `
+        <div class="song-line">
+          <div>${s.orderStr}. <span style="cursor:pointer;font-weight:500;" onclick="openSongModal('${esc(s.songName)}')">${s.songName}</span></div>
+          ${s.isEncore ? '<div class="encore-tag">安可</div>' : ''}
+        </div>`).join('');
+        }
+
+        const formattedNote = formatNoteWithLinks(ev.note);
+        const locationHtml = ev.location
+          ? (ev.mapLink
+            ? `<a href="${ev.mapLink}" target="_blank" class="upc-map-link">📍 ${ev.location}</a>`
+            : `<span>📍 ${ev.location}</span>`)
+          : '';
+        const ticketHtml = ev.ticket !== undefined
+          ? (ev.ticket
+            ? (ev.ticketLink
+              ? `<a href="${ev.ticketLink}" target="_blank" class="upc-map-link">🎫 需購票</a>`
+              : `<span>🎫 需購票</span>`)
+            : `<span>🎫 免費入場</span>`)
+          : '';
+        
+        card.innerHTML = `
+      <div class="chk-area"><input type="checkbox" class="ev-chk" data-id="${ev.id}" ${checked}></div>
+      <div class="ev-date-box">
+        <div class="ev-date-m">${dBox.m}月</div>
+        <div class="ev-date-d">${dBox.d}</div>
+        <div class="ev-date-w">(${dBox.w})</div>
+        ${endBox ? `<div class="ev-date-range">~${endBox.m}/${endBox.d}</div>` : ''}
+      </div>
+      <div class="ev-content">
+        <div class="ev-header">
+          <div>
+            <div class="ev-title">${ev.name}</div>
+            <div class="ev-meta">
+              ${ev.timeStr ? `<span class="ev-time">🕒 ${ev.timeStr}</span>` : ''}
+              ${locationHtml}
+              ${ticketHtml}
+              ${ev.postLink ? `<a href="${ev.postLink}" target="_blank" class="upc-map-link">🔗 官方帳號 / 貼文</a>` : ''}
+            </div>
+            ${formattedNote ? `<div class="ev-note">備註：${formattedNote}</div>` : ''}
+          </div>
+          <div style="color:var(--accent);font-weight:600;font-size:.9rem;text-align:right;flex-shrink:0;">
+             <div>${ev.setlist.length ? `共 ${ev.setlist.length} 首` : '期待解鎖'}</div>
+          </div>
+        </div>
+        <div class="ev-body">${bodyHtml}</div>
+      </div>`;
+        card.querySelector('.ev-content').addEventListener('click', () => card.classList.toggle('expanded'));
+        card.querySelector('.ev-chk').addEventListener('click', e => e.stopPropagation());
+        container.appendChild(card);
+      });
+    }
+
+    // 💾 儲存場次紀錄（改用 fetch POST）
+    document.getElementById('btn-save-events').addEventListener('click', () => {
+      if (!currentUser) {
+        document.getElementById('events-msg').innerText = '提示：請先建立或輸入專屬 ID 來保存您的精彩足跡！✨';
+        setTimeout(() => { document.getElementById('events-msg').innerText = ''; switchTab('view-journey'); }, 1500);
+        return;
+      }
+      const btn = document.getElementById('btn-save-events');
+      btn.innerText = '💾 儲存中...';
+      const selectedIds = Array.from(document.querySelectorAll('.ev-chk:checked')).map(c => c.getAttribute('data-id'));
+      currentUser.attendedIds = selectedIds;
+
+     fetch(GAS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' }, // 👈 必須加上這行以避開預檢
+        body: JSON.stringify({
+            action: 'saveUserData',
+            userId: currentUser.userId,
+            attendedEvents: selectedIds.join(','),
+            nickname: currentUser.nickname || ''
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        btn.innerText = '💾 儲存場次紀錄';
+        showToast('✨ 太棒了！您的場次紀錄已完美儲存！');
+        updateDashboard();
+      })
+      .catch(err => {
+        btn.innerText = '💾 儲存場次紀錄';
+        showToast('儲存遇到一點小狀況，請再試一次喔！');
+      });
+    });
+
+    function initTechView() {
+      if (!techInited) {
+        setupTechSearch();
+        setupPKSearch();
+        renderTechTopStocks();
+
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            techChartMode = btn.getAttribute('data-mode');
+            document.getElementById('pk-area').style.display = techChartMode === 'pk' ? 'block' : 'none';
+            document.getElementById('tech-indicators').style.display = techChartMode === 'single' ? 'grid' : 'none';
+            document.getElementById('tech-comment-card').style.display = techChartMode === 'single' ? 'block' : 'none';
+            renderTechChart();
+          });
+        });
+        techInited = true;
+      }
+      renderPortfolioCard();
+      renderMarketIndexChart();
+      if (techCurrentSong) renderTechChart();
+    }
+
+    function togglePortfolio() {
+      const el = document.getElementById('portfolio-detail-list');
+      const chevron = document.getElementById('portfolio-chevron');
+      if (el.style.display === 'none') {
+        el.style.display = 'block';
+        if (chevron) chevron.classList.add('open');
+      } else {
+        el.style.display = 'none';
+        if (chevron) chevron.classList.remove('open');
+      }
+    }
+
+    function renderPortfolioCard() {
+      const el = document.getElementById('tech-portfolio-content');
+      const detailList = document.getElementById('portfolio-detail-list');
+      detailList.innerHTML = '';
+
+      if (currentUser) {
+        let songCounts = {};
+        currentUser.attendedIds.forEach(id => {
+          const ev = appData.events.find(e => e.id === id);
+          if (ev) ev.setlist.forEach(s => { songCounts[s.songName] = (songCounts[s.songName] || 0) + 1; });
+        });
+
+        const allStats = getGlobalSongStats();
+        let totalValue = 0;
+        const ownedItems = [];
+
+        Object.keys(songCounts).forEach(song => {
+          if (!allStats[song]) return;
+          const sHist = allStats[song].history;
+          const latest = sHist[sHist.length - 1];
+          const price = latest ? latest.totalPrice : 100;
+          const count = songCounts[song];
+          const sum = price * count;
+          totalValue += sum;
+          ownedItems.push({ song, price, count, sum });
+        });
+
+        const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId;
+
+        el.innerHTML = `
+      <div class="portfolio-header" onclick="togglePortfolio()">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
+          <div>
+            <div style="font-size:.85rem;color:var(--text-secondary);font-weight:600;">您的金曲資產總值 (${displayName})</div>
+            <div style="font-size:2rem;font-weight:700;color:var(--accent-dark);margin-top:.2rem;">$${totalValue.toLocaleString()} 分</div>
+          </div>
+          <div style="font-size:.85rem;color:var(--accent-dark);font-weight:600;display:flex;align-items:center;gap:4px;">
+            點擊查看持股明細 <span id="portfolio-chevron" class="portfolio-chevron">▼</span>
+          </div>
+        </div>
+      </div>`;
+
+        ownedItems.sort((a, b) => b.sum - a.sum);
+        if (ownedItems.length === 0) {
+          detailList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);font-size:.9rem;">目前尚無解鎖持股，快去「詳細場次」打卡記錄您的熱血冒險吧！✨</div>';
+        } else {
+          detailList.innerHTML = ownedItems.map(item => `
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--border);padding:.6rem 0;">
+          <div style="font-weight:500; cursor:pointer;" onclick="openSongModal('${esc(item.song)}')">${item.song}</div>
+          <div style="text-align:right;">
+            <div style="font-size:.8rem;color:var(--text-secondary);">$${item.price.toLocaleString()} × ${item.count} 次</div>
+            <div style="font-weight:700;color:var(--accent-dark);">$${item.sum.toLocaleString()} 分</div>
+          </div>
+        </div>
+      `).join('');
+        }
+      } else {
+        el.innerHTML = `
+      <div style="text-align:center;padding:.5rem 0;">
+        <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.8rem;">✨ 登入後即可解鎖您的專屬音樂資產總值與詳細持股明細！</div>
+        <button class="btn" onclick="switchTab('view-journey')">前往登入</button>
+      </div>`;
+        detailList.style.display = 'none';
+      }
+    }
+
+    function renderMarketIndexChart() {
+      if (marketChartInst) { marketChartInst.destroy(); marketChartInst = null; }
+      const ctx = document.getElementById('tech-market-chart').getContext('2d');
+      const evs = getChronologicalEvents();
+      const allStats = getGlobalSongStats();
+      const labels = evs.map(ev => ev.date.slice(4) + ' ' + ev.name);
+
+      const eventValues = evs.map((ev, idx) => {
+        let totalValue = 0;
+        ev.setlist.forEach(s => {
+          const songHist = allStats[s.songName]?.history;
+          if (songHist && songHist[idx]) {
+            totalValue += songHist[idx].totalPrice;
+          }
+        });
+        return totalValue;
+      });
+
+      const ma5 = eventValues.map((val, idx, arr) => {
+        if (idx < 4) return null;
+        const slice = arr.slice(idx - 4, idx + 1);
+        return Math.round(slice.reduce((a, b) => a + b, 0) / 5);
+      });
+
+      marketChartInst = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels, datasets: [
+            { type: 'line', label: '5場動能均線 (MA5)', data: ma5, borderColor: '#AF52DE', backgroundColor: '#AF52DE', borderWidth: 2, pointRadius: 0, tension: 0.3, yAxisID: 'y' },
+            { type: 'bar', label: '單場總感動積分 (熱血成交量)', data: eventValues, backgroundColor: 'rgba(236,112,103,0.6)', borderRadius: 4, yAxisID: 'y' }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { mode: 'index', intersect: false } },
+          scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45, maxTicksLimit: 12, callback: function (val) { let label = this.getLabelForValue(val); return label.length > 10 ? label.slice(0, 10) + '...' : label; } } }, y: { title: { display: true, text: '感動積分 ($)' }, ticks: { callback: v => '$' + v } } }
+        }
+      });
+    }
+
+    function setupTechSearch() {
+      const input = document.getElementById('tech-search');
+      const results = document.getElementById('tech-search-results');
+      input.addEventListener('input', () => {
+        const val = input.value.trim().toLowerCase();
+        const list = val ? appData.songs.filter(s => s.toLowerCase().includes(val)) : appData.songs;
+        renderDropdown(results, list, song => { input.value = song; techCurrentSong = song; results.style.display = 'none'; if (techChartMode === 'single') renderTechSingleIndicators(); renderTechChart(); });
+      });
+      document.addEventListener('click', e => { if (e.target !== input) results.style.display = 'none'; });
+    }
+    function showTechSearchAll() {
+      const results = document.getElementById('tech-search-results');
+      renderDropdown(results, appData.songs, song => { document.getElementById('tech-search').value = song; techCurrentSong = song; results.style.display = 'none'; if (techChartMode === 'single') renderTechSingleIndicators(); renderTechChart(); });
+    }
+
+    function renderTechTopStocks() {
+      const stats = getGlobalSongStats();
+      const currentData = appData.songs.map(song => {
+        const s = stats[song];
+        const latest = s.history[s.history.length - 1];
+        return {
+          name: song,
+          price: latest ? latest.totalPrice : 100,
+          count: latest ? latest.count : 0
+        };
+      });
+
+      const top5 = [...currentData].sort((a, b) => b.price - a.price).slice(0, 5);
+      const common5 = [...currentData].sort((a, b) => b.count - a.count).slice(0, 5);
+
+      document.getElementById('tech-rare-top5').innerHTML = top5.map((p, i) => `<div class="stock-row" onclick="selectTechSong('${esc(p.name)}')"><span class="stock-name">${i + 1}. ${p.name}</span><span class="stock-price high">$${p.price.toLocaleString()} 分</span></div>`).join('');
+      document.getElementById('tech-common-top5').innerHTML = common5.map((p, i) => `<div class="stock-row" onclick="selectTechSong('${esc(p.name)}')"><span class="stock-name">${i + 1}. ${p.name} <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:normal;">(${p.count}次)</span></span><span class="stock-price low">$${p.price.toLocaleString()} 分</span></div>`).join('');
+    }
+
+    function selectTechSong(songName) {
+      document.getElementById('tech-search').value = songName;
+      techCurrentSong = songName;
+      techChartMode = 'single';
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === 'single'));
+      document.getElementById('pk-area').style.display = 'none';
+      document.getElementById('tech-indicators').style.display = 'grid';
+      document.getElementById('tech-comment-card').style.display = 'block';
+      renderTechSingleIndicators();
+      renderTechChart();
+    }
+
+    function renderTechSingleIndicators() {
+      if (!techCurrentSong) return;
+      const sData = getGlobalSongStats()[techCurrentSong];
+      const latest = sData.history[sData.history.length - 1] || { pct: 0, momentum: 0, rarityPrice: 100, comboBonus: 0, totalPrice: 100 };
+
+      document.getElementById('tech-rarity-price').innerText = `$${latest.rarityPrice.toLocaleString()}`;
+      document.getElementById('tech-combo-bonus').innerText = `$${latest.comboBonus.toLocaleString()}`;
+      document.getElementById('tech-momentum-val').innerText = latest.momentum;
+      document.getElementById('tech-total-price').innerText = `$${latest.totalPrice.toLocaleString()}`;
+
+      let sig = '🌟 穩健閃耀', cls = 'sig-neutral';
+      if (latest.momentum === 0 && latest.rarityPrice > 800) { sig = '💎 珍藏寶藏 (期待爆發)'; cls = 'sig-hot'; }
+      else if (latest.comboBonus > latest.rarityPrice && latest.momentum > 15) { sig = '🔥 熱血飆升動能'; cls = 'sig-hot'; }
+      else if (latest.pct > 70) { sig = '🎵 國民必聽金曲'; cls = 'sig-cold'; }
+
+      const sigEl = document.getElementById('tech-signal'); sigEl.innerText = sig; sigEl.className = `sig-badge ${cls}`;
+
+      let comment = `《${techCurrentSong}》目前的感動積分總價值為 $${latest.totalPrice.toLocaleString()} 分。`;
+      if (latest.comboBonus > latest.rarityPrice) {
+        comment += ` 這首歌近期現場熱度極高（熱動能高達 ${latest.momentum}），展現出強大的國民傳唱度與現場凝聚力！`;
+      } else {
+        comment += ` 這首歌擁有絕佳的珍藏指數評級（出現機率 ${latest.pct}%），屬於物以稀為貴的珍藏級金曲！`;
+      }
+      document.getElementById('tech-comment').innerText = comment;
+    }
+
+    function renderTechChart() {
+      if (techChartInst) { techChartInst.destroy(); techChartInst = null; }
+      const ctx = document.getElementById('tech-main-chart').getContext('2d');
+      const evs = getChronologicalEvents();
+      const labels = evs.map(ev => ev.date.slice(4) + ' ' + ev.name);
+      const allStats = getGlobalSongStats();
+
+      if (techChartMode === 'single') {
+        if (!techCurrentSong) { document.getElementById('tech-chart-title').innerText = '請先選擇歌曲'; return; }
+        document.getElementById('tech-chart-title').innerText = `📉 「${techCurrentSong}」感動積分雙核心走勢分析`;
+        renderTechSingleIndicators();
+
+        const sData = allStats[techCurrentSong].history;
+        const totalData = sData.map(h => h.totalPrice);
+        const rarityData = sData.map(h => h.rarityPrice);
+        const comboData = sData.map(h => h.comboBonus);
+
+        techChartInst = new Chart(ctx, {
+          data: {
+            labels,
+            datasets: [
+              { type: 'bar', label: '珍藏指數 ($)', data: rarityData, backgroundColor: 'rgba(175,82,222,0.75)', stack: 'stack0', borderRadius: 2 },
+              { type: 'bar', label: '熱力加成 ($)', data: comboData, backgroundColor: 'rgba(236,112,103,0.8)', stack: 'stack0', borderRadius: 2 },
+              { type: 'line', label: '感動積分線 ($)', data: totalData, borderColor: '#3D3833', backgroundColor: 'transparent', borderWidth: 3, pointRadius: 2, tension: 0.3 }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { mode: 'index', intersect: false } },
+            scales: {
+              x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45, maxTicksLimit: 12, callback: function (val) { let label = this.getLabelForValue(val); return label.length > 10 ? label.slice(0, 10) + '...' : label; } } },
+              y: { stacked: true, title: { display: true, text: '感動積分 ($)' }, ticks: { callback: v => '$' + v } }
+            }
+          }
+        });
+      } else if (techChartMode === 'pk') {
+        if (!pkSongs.length) { document.getElementById('tech-chart-title').innerText = '請在上方搜尋並加入比對歌曲'; return; }
+        document.getElementById('tech-chart-title').innerText = `⚔️ 多曲 PK：${pkSongs.join(' vs ')}`;
+
+        const datasets = pkSongs.map((song, i) => {
+          const data = evs.map((_, idx) => allStats[song].history[idx].totalPrice);
+          return { label: song, data, borderColor: PK_COLORS[i], backgroundColor: PK_COLORS[i] + '15', borderWidth: 2.5, pointRadius: 2.5, fill: false, tension: 0.3 };
+        });
+
+        techChartInst = new Chart(ctx, { type: 'line', data: { labels, datasets }, options: chartOptions1Y('感動積分 ($)', 100, undefined) });
+      }
+    }
+
+    function chartOptions1Y(yLabel, yMin, yMax) {
+      return {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { mode: 'index', intersect: false } },
+        scales: {
+          x: { ticks: { font: { size: 10 }, maxRotation: 45, maxTicksLimit: 12, callback: function (val) { let label = this.getLabelForValue(val); return label.length > 10 ? label.slice(0, 10) + '...' : label; } }, grid: { display: false } },
+          y: { min: yMin, max: yMax, title: { display: true, text: yLabel }, ticks: { callback: v => '$' + v } }
+        }
+      };
+    }
+
+    function setupPKSearch() {
+      const input = document.getElementById('pk-search');
+      const results = document.getElementById('pk-search-results');
+      input.addEventListener('input', () => {
+        const val = input.value.trim().toLowerCase();
+        const list = val ? appData.songs.filter(s => s.toLowerCase().includes(val) && !pkSongs.includes(s)) : appData.songs.filter(s => !pkSongs.includes(s));
+        renderDropdown(results, list, song => { input.value = ''; results.style.display = 'none'; addPKSong(song); });
+      });
+      document.addEventListener('click', e => { if (e.target !== input) results.style.display = 'none'; });
+    }
+    function addPKSong(song) { if (pkSongs.includes(song) || pkSongs.length >= 3) return; pkSongs.push(song); renderPKChips(); renderTechChart(); }
+    function removePKSong(song) { pkSongs = pkSongs.filter(s => s !== song); renderPKChips(); renderTechChart(); }
+    function renderPKChips() { document.getElementById('pk-count').innerText = pkSongs.length; document.getElementById('pk-chips').innerHTML = pkSongs.map((s, i) => `<div class="pk-chip"><span class="pk-color-dot" style="background:${PK_COLORS[i]};"></span>${s}<button class="pk-chip-x" onclick="removePKSong('${esc(s)}')" title="移除">✕</button></div>`).join(''); }
+
+    function saveLoginHistory(id) { let hist = getLoginHistory().filter(h => h !== id); hist.unshift(id); if (hist.length > 5) hist = hist.slice(0, 5); localStorage.setItem(LS_HISTORY, JSON.stringify(hist)); localStorage.setItem(LS_AUTO, id); }
+    function getLoginHistory() { try { return JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch { return []; } }
+    function loadLoginHistory() { const hist = getLoginHistory(); const area = document.getElementById('login-history-area'); const chips = document.getElementById('login-history-chips'); if (!hist.length) { area.style.display = 'none'; return; } area.style.display = 'block'; chips.innerHTML = hist.map(id => `<div class="id-chip-btn" onclick="quickLogin('${id}')">${id}</div>`).join(''); }
+    function quickLogin(id) { document.getElementById('login-id').value = id; document.getElementById('btn-login').click(); }
+
+    // 🔑 自動登入（改用 fetch GET）
+    function tryAutoLogin() {
+      const saved = localStorage.getItem(LS_AUTO);
+      if (!saved) return;
+      fetch(`${GAS_API_URL}?action=getUserData&userId=${saved}`)
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            currentUser = { userId: res.userId, attendedIds: res.attendedEvents ? res.attendedEvents.split(',').filter(Boolean) : [], nickname: res.nickname || '' };
+            onLoginSuccess(true);
+          }
+        })
+        .catch(() => {});
+    }
+
+    // 🔓 登入（改用 fetch GET）
+    document.getElementById('btn-login').addEventListener('click', () => {
+      const id = document.getElementById('login-id').value.trim().toUpperCase();
+      if (!id) return;
+      const btn = document.getElementById('btn-login'); btn.innerText = '...';
+      fetch(`${GAS_API_URL}?action=getUserData&userId=${id}`)
+        .then(res => res.json())
+        .then(res => {
+          btn.innerText = '登入';
+          if (res.success) {
+            currentUser = { userId: res.userId, attendedIds: res.attendedEvents ? res.attendedEvents.split(',').filter(Boolean) : [], nickname: res.nickname || '' };
+            saveLoginHistory(res.userId);
+            onLoginSuccess(false);
+          } else {
+            alert('登入失敗: ' + res.error);
+          }
+        })
+        .catch(err => {
+          btn.innerText = '登入';
+          alert('連線失敗: ' + err);
+        });
+    });
+
+    // ✨ 建立新 ID（改用 fetch POST）
+    document.getElementById('btn-start-create').addEventListener('click', () => {
+      const btn = document.getElementById('btn-start-create'); btn.innerText = '建立中...';
+      const selected = Array.from(document.querySelectorAll('.ev-chk:checked')).map(c => c.getAttribute('data-id'));
+
+      fetch(GAS_API_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'saveUserData',
+          userId: '',
+          attendedEvents: selected.join(','),
+          nickname: ''
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        btn.innerText = '建立新的專屬 ID';
+        if (res.success) {
+          currentUser = { userId: res.userId, attendedIds: selected, nickname: res.nickname || '' };
+          saveLoginHistory(res.userId);
+          onLoginSuccess(false);
+          if (selected.length) showToast('✨ 建立成功，並已儲存您剛才勾選的場次！');
+          else { showToast('✨ 建立成功！快去詳細場次勾選您參與過的演出吧！'); switchTab('view-events'); }
+        } else {
+          alert('建立失敗: ' + res.error);
+        }
+      })
+      .catch(err => {
+        btn.innerText = '建立新的專屬 ID';
+        alert('建立失敗: ' + err);
+      });
+    });
+
+    // 🏷️ 儲存暱稱（改用 fetch POST）
+    document.getElementById('btn-save-nickname').addEventListener('click', () => {
+      if (!currentUser) return;
+      const newNick = document.getElementById('user-nickname-input').value.trim();
+      const btn = document.getElementById('btn-save-nickname'); btn.innerText = '儲存中...';
+
+      fetch(GAS_API_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'saveUserData',
+          userId: currentUser.userId,
+          attendedEvents: currentUser.attendedIds.join(','),
+          nickname: newNick
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        btn.innerText = '儲存暱稱';
+        if (res.success) {
+          currentUser.nickname = res.nickname;
+          updateNavProfileDisplay();
+          showToast('✨ 暱稱儲存成功！');
+        } else {
+          showToast('儲存失敗: ' + res.error);
+        }
+      })
+      .catch(err => {
+        btn.innerText = '儲存暱稱';
+        showToast('儲存失敗: ' + err);
+      });
+    });
+
+    function updateNavProfileDisplay() { const btnLabel = document.getElementById('nav-btn-label'); if (currentUser) { const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId; btnLabel.innerHTML = `🎫 ${displayName}`; } else { btnLabel.innerHTML = `👣 我去哪流浪`; } }
+
+    function onLoginSuccess(silent) {
+      const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId;
+      document.getElementById('events-login-status').innerText = `已登入: ${displayName}`;
+      updateNavProfileDisplay(); document.getElementById('journey-auth').style.display = 'none'; document.getElementById('journey-dashboard').style.display = 'block'; document.getElementById('user-nickname-input').value = currentUser.nickname || '';
+      renderEventsList(); updateDashboard(); renderPortfolioCard();
+      if (!silent) showToast(`✨ 歡迎回來，${displayName}！準備好迎接今天的音樂冒險了嗎？`);
+    }
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      localStorage.removeItem(LS_AUTO); currentUser = null; document.getElementById('events-login-status').innerText = '未登入'; updateNavProfileDisplay(); document.getElementById('journey-dashboard').style.display = 'none'; document.getElementById('journey-auth').style.display = 'block'; document.getElementById('login-id').value = ''; loadLoginHistory(); renderEventsList(); renderPortfolioCard();
+    });
+    document.getElementById('btn-edit-events').addEventListener('click', () => switchTab('view-events'));
+
+    function setHeardSort(mode) { if (heardSortMode === mode) heardSortDir *= -1; else { heardSortMode = mode; heardSortDir = mode === 'pct' ? 1 : -1; } document.getElementById('sort-pct-btn').classList.toggle('active', mode === 'pct'); document.getElementById('sort-cnt-btn').classList.toggle('active', mode === 'count'); document.getElementById('sort-pct-btn').innerText = `出現率 ${mode === 'pct' ? (heardSortDir === 1 ? '↑' : '↓') : '↑'}`; document.getElementById('sort-cnt-btn').innerText = `聽過次數 ${mode === 'count' ? (heardSortDir === -1 ? '↓' : '↑') : '↑'}`; renderHeardSongs(); }
+function renderHeardSongs() { const sorted = [...heardSongs].sort((a, b) => { const va = heardSortMode === 'pct' ? a.pct : a.count; const vb = heardSortMode === 'pct' ? b.pct : b.count; return (va - vb) * heardSortDir; }); const el = document.getElementById('dash-heard-songs'); if (!sorted.length) { el.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:1rem 0;">目前尚未有收藏紀錄，快去打卡解鎖您的第一首歌吧！✨</div>'; return; } el.innerHTML = sorted.map((s, i) => `<div class="heard-row"><div><span style="color:var(--text-secondary);margin-right:8px;">#${i + 1}</span><span style="cursor:pointer;font-weight:500;" onclick="openSongModal('${esc(s.name)}')">${s.name}</span></div><div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:flex-end;"><span style="color:var(--text-secondary);font-size:.9rem;">出現率 ${s.pct}%</span><span style="font-weight:600;color:var(--accent-dark);">聽過 ${s.count} 次</span></div></div>`).join(''); }
+    // 🕒 從 "20:00 - 21:00" 這種文字裡算出分鐘數，events 若沒有 durationMins 欄位時自動用這個估算
+    function parseDurationFromTimeStr(timeStr) {
+      if (!timeStr) return 0;
+      const m = timeStr.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+      if (!m) return 0;
+      const start = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+      let end = parseInt(m[3], 10) * 60 + parseInt(m[4], 10);
+      if (end <= start) end += 24 * 60; // 跨午夜的場次
+      return end - start;
+    }
+
+    function toggleAttendedEvents() {
+      const el = document.getElementById('attended-detail-card');
+      const chevron = document.getElementById('attended-chevron');
+      if (el.style.display === 'none') { el.style.display = 'block'; if (chevron) chevron.classList.add('open'); } else { el.style.display = 'none'; if (chevron) chevron.classList.remove('open'); }
+    }
+
+    function updateDashboard() {
+      if (!currentUser) return;
+      const ids = currentUser.attendedIds;
+      const totalEvts = appData.events.length;
+      const validN = getValidEvents().length;
+      const probsAll = calcProbs(validN);
+
+      const displayName = currentUser.nickname ? `${currentUser.nickname} (${currentUser.userId})` : currentUser.userId;
+      document.getElementById('display-user-id').innerText = displayName;
+      document.getElementById('dash-prog-cnt').innerText = ids.length;
+      document.getElementById('dash-total-cnt').innerText = totalEvts;
+      const pct = Math.min(100, ids.length / totalEvts * 100);
+      document.getElementById('dash-prog-bar').style.width = pct + '%';
+      document.getElementById('dash-events').innerText = ids.length;
+
+      let songCounts = {};
+      let totalSongsHeard = 0;
+      let totalTimeMins = 0;
+
+      ids.forEach(id => {
+        const ev = appData.events.find(e => e.id === id);
+        if (ev) {
+          totalSongsHeard += ev.setlist.length;
+          totalTimeMins += ev.durationMins || parseDurationFromTimeStr(ev.timeStr) || 0;
+          ev.setlist.forEach(s => { songCounts[s.songName] = (songCounts[s.songName] || 0) + 1; });
+        }
+      });
+
+      document.getElementById('dash-heard-songs-total').innerText = totalSongsHeard;
+      if (totalTimeMins >= 60) {
+        document.getElementById('dash-time-total').innerText = (totalTimeMins / 60).toFixed(1) + ' 小時';
+      } else {
+        document.getElementById('dash-time-total').innerText = totalTimeMins + ' 分鐘';
+      }
+
+      const unlocked = appData.songs
+        .filter(s => !songCounts[s])
+        .map(s => { const p = probsAll.find(x => x.name === s); return { name: s, pct: p ? p.pctVal : 0 }; })
+        .sort((a, b) => b.pct - a.pct);
+      document.getElementById('dash-unlocked-cnt').innerText = unlocked.length;
+      const ulEl = document.getElementById('dash-unlocked-songs');
+      if (!unlocked.length) { ulEl.innerHTML = '<div style="color:var(--up);font-weight:600;text-align:center;padding:1rem 0;">🎉 太厲害了！您已解鎖所有歌曲的現場演出！</div>'; } else { ulEl.innerHTML = unlocked.map((s, i) => `<div class="heard-row"><div><span style="color:var(--text-secondary);margin-right:8px;">#${i + 1}</span><span style="cursor:pointer;font-weight:500;" onclick="openSongModal('${esc(s.name)}')">${s.name}</span></div><div style="display:flex;align-items:center;gap:.5rem;"><span style="color:var(--text-secondary);font-size:.9rem;">出現率 ${s.pct}%</span></div></div>`).join(''); }
+
+      let title = '🦕 我還是個孩子';
+      if (ids.length >= 25) title = '🌟 編織星空的人'; else if (ids.length >= 15) title = '🌌 黑暗的盡頭是你和脆'; else if (ids.length >= 8) title = '🚅 離開與到來'; else if (ids.length >= 3) title = '🦖 揹上快樂北上';
+      document.getElementById('journey-title').innerText = title;
+
+      heardSongs = Object.keys(songCounts).map(name => { const st = getSongStats(name); return { name, count: songCounts[name], pct: st.total, rarity: st.rarity }; });
+      renderHeardSongs();
+
+      const attendedListEl = document.getElementById('dash-attended-events-list');
+      if (ids.length === 0) {
+        attendedListEl.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:1rem 0;font-size:.9rem;">目前尚未勾選參與場次，快去<a onclick="switchTab(\'view-events\')" style="color:var(--accent);cursor:pointer;text-decoration:underline;">詳細場次</a>記錄您的冒險足跡吧！✨</div>';
+      } else {
+        const attendedEvs = appData.events.filter(e => ids.includes(e.id));
+        attendedListEl.innerHTML = attendedEvs.map(ev => `
+          <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--border);padding:.6rem 0;font-size:.9rem;">
+            <div>
+              <div style="font-size:.75rem;color:var(--text-secondary);">${formatEventDate(ev.date)}</div>
+              <div style="font-weight:600;color:var(--text-main);">${ev.name}</div>
+            </div>
+            <div style="font-size:.8rem;color:var(--accent-dark);font-weight:600;background:var(--accent-light);padding:2px 8px;border-radius:6px;">
+              ${ev.setlist.length} 首金曲
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function setupReportSongSearch() { const input = document.getElementById('rpt-song-search'); const results = document.getElementById('rpt-song-results'); input.addEventListener('input', () => { const val = input.value.trim().toLowerCase(); const list = val ? appData.songs.filter(s => s.toLowerCase().includes(val)) : appData.songs; renderDropdown(results, list, song => { input.value = ''; results.style.display = 'none'; addReportSong(song); }); }); document.addEventListener('click', e => { if (e.target !== input) results.style.display = 'none'; }); }
+    function addReportSong(songName) { reportSetlist.push({ songName, isEncore: false }); renderSetlistChips(); }
+    function removeReportSong(idx) { reportSetlist.splice(idx, 1); renderSetlistChips(); }
+    function toggleEncore(idx, val) { reportSetlist[idx].isEncore = val; }
+    function moveChip(idx, dir) { const newIdx = idx + dir; if (newIdx < 0 || newIdx >= reportSetlist.length) return;[reportSetlist[idx], reportSetlist[newIdx]] = [reportSetlist[newIdx], reportSetlist[idx]]; renderSetlistChips(); }
+    function renderSetlistChips() { const container = document.getElementById('setlist-chips'); const empty = document.getElementById('setlist-empty'); empty.style.display = reportSetlist.length ? 'none' : 'block'; container.innerHTML = ''; reportSetlist.forEach((item, idx) => { const chip = document.createElement('div'); chip.className = 's-chip'; chip.draggable = true; chip.dataset.idx = idx; chip.innerHTML = `<span class="s-chip-num">${idx + 1}</span><label class="s-chip-encore"><input type="checkbox" ${item.isEncore ? 'checked' : ''} onchange="toggleEncore(${idx}, this.checked)">安可</label><span class="s-chip-name">${item.songName}</span><div class="s-chip-btns"><button class="s-chip-btn" onclick="moveChip(${idx}, -1)" title="上移">▲</button><button class="s-chip-btn" onclick="moveChip(${idx}, 1)" title="下移">▼</button><button class="s-chip-btn s-chip-del" onclick="removeReportSong(${idx})" title="刪除">✕</button></div>`; chip.addEventListener('dragstart', e => { dragSrcIdx = idx; chip.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; }); chip.addEventListener('dragend', () => { chip.classList.remove('dragging'); document.querySelectorAll('.s-chip').forEach(c => c.classList.remove('dragover')); }); chip.addEventListener('dragover', e => { e.preventDefault(); if (dragSrcIdx !== idx) chip.classList.add('dragover'); }); chip.addEventListener('dragleave', () => chip.classList.remove('dragover')); chip.addEventListener('drop', e => { e.preventDefault(); chip.classList.remove('dragover'); if (dragSrcIdx === null || dragSrcIdx === idx) return; const moved = reportSetlist.splice(dragSrcIdx, 1)[0]; reportSetlist.splice(idx, 0, moved); dragSrcIdx = null; renderSetlistChips(); }); container.appendChild(chip); }); }
+
+    function clearReportForm() {
+      document.getElementById('rpt-date').value = '';
+      document.getElementById('rpt-name').value = '';
+      document.getElementById('rpt-time').value = '';
+      document.getElementById('rpt-note').value = '';
+      document.getElementById('rpt-submitter').value = '';
+      reportSetlist = []; renderSetlistChips();
+    }
+
+    // 📤 提交場次回報（改用 fetch POST）
+    function submitReport() {
+      const date = document.getElementById('rpt-date').value.trim();
+      const name = document.getElementById('rpt-name').value.trim();
+      const time = document.getElementById('rpt-time').value.trim();
+      const note = document.getElementById('rpt-note').value.trim();
+      const submitter = document.getElementById('rpt-submitter').value.trim();
+
+      if (!date || !/^\d{8}$/.test(date)) { showToast('⚠️ 請填入正確的 8 位數字活動日期'); return; }
+      if (!name) { showToast('⚠️ 請填寫活動名稱'); return; }
+      if (!reportSetlist.length) { showToast('⚠️ 請至少加入一首表演歌曲'); return; }
+
+      const btn = document.getElementById('btn-submit-report'); btn.innerText = '提交中...'; btn.disabled = true;
+      const reportData = { date, name, time, setlist: reportSetlist, note, submitter };
+
+      fetch(GAS_API_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'submitEventReport',
+          ...reportData
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        btn.innerText = '📤 提交回報'; btn.disabled = false;
+        if (res.success) {
+          showToast(res.isDuplicate ? '✨ 回報已成功送出！(已標記日期重複，待管理員確認)' : '✨ 回報已成功送出！感謝您的熱心貢獻！');
+          clearReportForm();
+          loadPendingEvents();
+        } else {
+          showToast('提交遇到一點小狀況：' + res.error);
+        }
+      })
+      .catch(err => {
+        btn.innerText = '📤 提交回報'; btn.disabled = false;
+        showToast('提交失敗：' + err);
+      });
+    }
+
+    // ⏳ 讀取待審核場次（改用 fetch GET）
+    function loadPendingEvents() {
+      const el = document.getElementById('pending-list'); el.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:2rem 0;">載入中…</div>';
+      
+      fetch(`${GAS_API_URL}?action=getPendingEvents`)
+        .then(res => res.json())
+        .then(res => {
+          if (!res.success) { el.innerHTML = '<div style="color:var(--dn);">讀取失敗</div>'; return; }
+          if (!res.events.length) { el.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:2rem 0;">目前沒有待審核的場次，大家都很棒！🎉</div>'; return; }
+
+          el.innerHTML = res.events.map(ev => `
+        <div class="card pending-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem;">
+            <div>
+              <span style="background:var(--accent-light);color:var(--accent-dark);font-size:.75rem;font-weight:700;padding:3px 8px;border-radius:6px;margin-right:.5rem;">⏳ 審核中</span>
+              ${ev.isDuplicate ? '<span class="pending-dup-tag">⚠️ 日期重複</span>' : ''}
+            </div>
+            <div style="font-size:.85rem;color:var(--text-secondary);">${formatEventDate(ev.date)}</div>
+          </div>
+          <div style="font-size:1.1rem;font-weight:600;margin-bottom:.3rem;">${ev.name}</div>
+          ${ev.time ? `<div style="font-size:.85rem;font-weight:600;color:var(--sr-color);margin-bottom:.3rem;">🕒 ${ev.time}</div>` : ''}
+          <div style="font-size:.85rem;color:var(--text-secondary);margin-bottom:.5rem;">共 ${ev.count} 首歌曲</div>
+          ${ev.setlist.length ? `<div style="font-size:.85rem;color:var(--text-secondary);margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border);">${ev.setlist.map((s, i) => `<span style="margin-right:.5rem;">${i + 1}. ${s.songName}${s.isEncore ? ' (安可)' : ''}</span>`).join('')}</div>` : ''}
+          ${ev.note ? `<div style="font-size:.75rem;color:var(--text-secondary);margin-top:.5rem;font-style:italic;">${ev.note}</div>` : ''}
+        </div>`).join('');
+        })
+        .catch(() => { el.innerHTML = '<div style="color:var(--dn);">讀取失敗</div>'; });
+    }
+  </script>
+</body>
+
+</html>
