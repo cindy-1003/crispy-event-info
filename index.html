@@ -190,35 +190,6 @@
       border: 1px solid var(--border);
     }
 
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 12px;
-      font-size: .75rem;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .badge.R {
-      background: var(--r-color);
-    }
-
-    .badge.SR {
-      background: var(--sr-color);
-    }
-
-    .badge.SSR {
-      background: var(--ssr-color);
-    }
-
-    .badge.SSSR {
-      background: var(--sssr-color);
-    }
-
-    .badge.N {
-      background: #999;
-    }
-
     input[type="text"],
     input[type="number"],
     input[type="date"] {
@@ -807,123 +778,6 @@
       color: #fff;
     }
 
-    .tech-stock-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    @media(max-width:600px) {
-      .tech-stock-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .stock-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: .7rem 0;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-    }
-
-    .stock-row:last-child {
-      border-bottom: none;
-    }
-
-    .stock-row:hover .stock-name {
-      color: var(--accent-dark);
-    }
-
-    .stock-price {
-      font-weight: 700;
-      font-size: 1.05rem;
-    }
-
-    .stock-price.high {
-      color: var(--dn);
-    }
-
-    .stock-price.low {
-      color: var(--accent-dark);
-    }
-
-    .mode-bar {
-      display: flex;
-      gap: .5rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
-
-    .mode-btn {
-      padding: .5rem 1rem;
-      border-radius: 20px;
-      font-size: .85rem;
-      font-weight: 500;
-      cursor: pointer;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      transition: .2s;
-      color: var(--text-secondary);
-    }
-
-    .mode-btn.active {
-      background: var(--text-main);
-      color: #fff;
-      border-color: var(--text-main);
-    }
-
-    .pk-area {
-      margin-bottom: 1rem;
-    }
-
-    .pk-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
-      margin-top: .5rem;
-    }
-
-    .pk-chip {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-      background: var(--accent-light);
-      border: 1px solid rgba(236, 112, 103, .25);
-      border-radius: 20px;
-      padding: .3rem .8rem;
-      font-size: .85rem;
-      font-weight: 600;
-      color: var(--accent-dark);
-    }
-
-    .pk-chip-x {
-      cursor: pointer;
-      font-size: 1rem;
-      line-height: 1;
-      color: var(--accent-dark);
-      background: none;
-      border: none;
-    }
-
-    .pk-color-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .portfolio-header {
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-
-    .portfolio-header:hover {
-      opacity: 0.8;
-    }
-
     .portfolio-chevron {
       transition: transform 0.3s;
       display: inline-block;
@@ -1185,7 +1039,6 @@
       <button class="modal-close" onclick="closeSongModal()">✕</button>
       <h2 id="modal-name" style="margin-bottom:.3rem;padding-right:2rem;"></h2>
       <div style="margin-bottom:1.5rem;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;">
-        <span id="modal-badge" class="badge"></span>
         <span id="modal-prob" style="font-weight:600;color:var(--accent-dark);"></span>
         <span id="modal-cnt" style="color:var(--text-secondary);font-size:.9rem;"></span>
       </div>
@@ -1299,111 +1152,11 @@
       <div id="events-list"></div>
     </div>
 
-    <!-- ===== TECH (金曲交易所 - 彩蛋隱藏版) ===== -->
-    <div id="view-tech" class="view">
-      <h2>📈 脆樂團金曲交易所 <span
-          style="font-size:0.75rem; background:var(--accent-light); color:var(--accent-dark); padding:3px 8px; border-radius:12px; border:1px solid var(--accent); vertical-align:middle;">🔧
-          開發中彩蛋</span></h2>
-      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">探索每首歌曲的珍藏指數與熱力加成！結合 R、SR、SSR、SSSR
-        稀有評級與連續熱力，為您的現場回憶賦予閃耀的感動積分！</p>
-
-      <div
-        style="background: var(--accent-light); border: 1.5px dashed var(--accent); border-radius: 12px; padding: 0.9rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--accent-dark); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6;">
-        <span style="font-size: 1.2rem; flex-shrink: 0;">✨</span>
-        <div>
-          <b>溫馨應援提醒：</b>本「交易所」為樂迷專屬的心靈娛樂與回憶收藏園地，充滿正能量與滿分的愛！<br>「聽團的每一刻都是無價之寶，本金是青春與熱血，利息是無限感動與多巴胺！帶著愉快的心情，繼續沈浸在脆樂團的音樂宇宙裡吧！」
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom:1.5rem;">
-        <div id="tech-portfolio-content"></div>
-        <div id="portfolio-detail-list"
-          style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border);"></div>
-      </div>
-
-      <div class="card" style="margin-bottom:1.5rem;">
-        <h3 style="margin-bottom:.5rem;">🗺️ 脆樂大盤指數 (單場總感動積分走勢)</h3>
-        <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">記錄每一場演出的感動總和與能量高峰，專場演出總是特別震撼！</p>
-        <div style="position:relative;height:250px;"><canvas id="tech-market-chart"></canvas></div>
-      </div>
-
-      <div class="tech-stock-grid">
-        <div class="card">
-          <h3 style="color:var(--dn);margin-bottom:1rem;">💎 夢幻珍藏金曲 Top 5</h3>
-          <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:1rem;">稀有機率出現的珍貴好歌（依感動積分排序）</p>
-          <div id="tech-rare-top5"></div>
-        </div>
-        <div class="card">
-          <h3 style="color:var(--accent-dark);margin-bottom:1rem;">🎵 國民傳唱金曲 Top 5</h3>
-          <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:1rem;">大家最耳熟能詳的親民好歌（依演出次數排序，顯示感動積分）
-          </p>
-          <div id="tech-common-top5"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 style="margin-bottom:1rem;">選擇歌曲進行深度分析</h3>
-        <div class="input-group">
-          <input type="text" id="tech-search" placeholder="點擊或輸入歌曲名稱…" autocomplete="off" readonly
-            onfocus="this.removeAttribute('readonly')" onclick="showTechSearchAll()">
-          <div id="tech-search-results" class="dropdown-results"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="mode-bar" id="tech-mode-bar">
-          <div class="mode-btn active" data-mode="single">📈 單曲成長走勢</div>
-          <div class="mode-btn" data-mode="pk">⚔️ 多曲 PK 競技場</div>
-        </div>
-
-        <div id="pk-area" class="pk-area" style="display:none;">
-          <div style="font-size:.85rem;color:var(--text-secondary);margin-bottom:.4rem;">選擇最多 3 首歌進行並肩對比（已選: <span
-              id="pk-count">0</span>/3）：</div>
-          <div class="input-group" style="margin-bottom:.5rem;">
-            <input type="text" id="pk-search" placeholder="搜尋並新增比對歌曲…" autocomplete="off">
-            <div id="pk-search-results" class="dropdown-results"></div>
-          </div>
-          <div class="pk-chips" id="pk-chips"></div>
-        </div>
-
-        <h3 id="tech-chart-title" style="margin-bottom:1rem;font-size:1rem;"></h3>
-        <div style="position:relative;height:300px;"><canvas id="tech-main-chart"></canvas></div>
-      </div>
-
-      <!-- 金曲雙核心儀表板 -->
-      <div id="tech-indicators" class="tech-stock-grid">
-        <div class="indicator-card">
-          <div style="font-size:.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:.3rem;">珍藏指數 (基底)</div>
-          <div class="indicator-val" id="tech-rarity-price" style="color:#AF52DE;">$-</div>
-          <div style="font-size:.8rem;color:var(--text-secondary);">依稀有度與未出現率加權</div>
-        </div>
-        <div class="indicator-card">
-          <div style="font-size:.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:.3rem;">熱力加成 (熱動能)
-          </div>
-          <div class="indicator-val" id="tech-combo-bonus" style="color:#ec7067;">$-</div>
-          <div style="font-size:.8rem;color:var(--text-secondary);">現場熱血動能 (動能: <span id="tech-momentum-val"
-              style="font-weight:700;">0</span>)</div>
-        </div>
-        <div class="indicator-card full-span">
-          <div>
-            <div style="font-size:.85rem;font-weight:600;color:var(--accent-dark);margin-bottom:.3rem;">感動積分總價值</div>
-            <div class="indicator-val" id="tech-total-price" style="color:var(--text-main); margin:0;">$-</div>
-          </div>
-          <div id="tech-signal" class="sig-badge sig-neutral" style="margin:0;">-</div>
-        </div>
-      </div>
-
-      <div class="card" id="tech-comment-card">
-        <h3 style="margin-bottom:.8rem;">🤖 AI 應援分析評語</h3>
-        <p id="tech-comment" style="color:var(--text-main);line-height:1.8;"></p>
-      </div>
-    </div>
-
     <!-- ===== JOURNEY (我去哪流浪) ===== -->
     <div id="view-journey" class="view">
       <div id="journey-auth" style="text-align:center;max-width:420px;margin:0 auto;padding-top:2rem;">
-        <h2>和脆脆一起離開與到來</h2>
-        <p style="color:var(--text-secondary);margin-bottom:2rem;">建立或輸入專屬 ID，解鎖屬於您的音樂足跡與成就！✨</p>
+        <h2>追呀追呀追去哪呢？</h2>
+        <p style="color:var(--text-secondary);margin-bottom:2rem;">建立或輸入專屬 ID，紀錄屬於您的音樂足跡與成就！✨</p>
         <div class="card">
           <h3 style="font-size:1rem;margin-bottom:1rem;">我有專屬 ID</h3>
           <div style="display:flex;gap:.5rem;">
@@ -1500,14 +1253,6 @@
           <button class="btn" id="btn-edit-events" style="flex:1;">📝 編輯場次</button>
           <button class="btn btn-ghost" id="btn-logout" style="flex:1;">登出</button>
         </div>
-
-        <!-- 🔧 金曲交易所隱藏彩蛋按鈕 -->
-        <div style="margin-top:3rem; padding-top:1.5rem; border-top:1px dashed var(--border); text-align:center;">
-          <button class="btn btn-ghost btn-sm" onclick="switchTab('view-tech')"
-            style="color:var(--text-secondary); border-color:var(--border);">
-            📈 探索金曲交易所 (開發中彩蛋) 🔮
-          </button>
-        </div>
       </div>
     </div>
 
@@ -1566,8 +1311,11 @@
   </div>
 
   <footer
-    style="max-width: 960px; margin: 2rem auto; padding: 1.5rem; text-align: center; font-size: 0.82rem; color: var(--text-secondary); border-top: 1px solid var(--border);">
-    <div style="margin-bottom: 0.3rem;">改版時間：20260809</div>
+    style="max-width: 960px; margin: 2rem auto; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 0.82rem; color: var(--text-secondary); border-top: 1px solid var(--border); gap: 0.3rem;">
+    <div>改版時間：20260809</div>
+    <div>網站作者：<a
+        href="https://www.threads.com/@raining_1123" target="_blank"
+        style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">y🌧️</a></div>
     <div>本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄 」網站，原始架構開發者：<a
         href="https://www.threads.com/@blues_.g" target="_blank"
         style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">blues</a>（已獲授權使用）</div>
@@ -1584,15 +1332,7 @@
     let heardSortDir = -1;
     let heardSongs = [];
     let globalSongStats = null;
-
-    let techCurrentSong = '';
-    let techChartMode = 'single';
-    let pkSongs = [];
-    let techChartInst = null;
-    let marketChartInst = null;
     let modalChartInst = null;
-    const PK_COLORS = ['#ec7067', '#007AFF', '#34C759'];
-    let techInited = false;
 
     let reportSetlist = [];
     let dragSrcIdx = null;
@@ -1606,12 +1346,6 @@
       t.innerText = msg;
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
-    }
-    function getRarity(pct) {
-      if (pct >= 71) return 'R';
-      if (pct >= 41) return 'SR';
-      if (pct >= 11) return 'SSR';
-      return 'SSSR';
     }
     function esc(str) { return str.replace(/'/g, "\\'"); }
 
@@ -1689,7 +1423,6 @@
       if (targetView) targetView.classList.add('active');
       window.scrollTo(0, 0);
 
-      if (id === 'view-tech') initTechView();
       if (id === 'view-report') loadPendingEvents();
     }
 
@@ -1911,7 +1644,7 @@
 
       let result = Object.keys(counts).map(song => {
         const pct = Math.round((counts[song] / total) * 100);
-        return { name: song, count: counts[song], pctVal: pct, rarity: getRarity(pct) };
+        return { name: song, count: counts[song], pctVal: pct };
       });
       result.sort((a, b) => b.pctVal - a.pctVal);
       result.forEach((r, i) => r.rank = i + 1);
@@ -1929,8 +1662,7 @@
         recent8: p8 ? p8.pctVal : 0,
         recent12: p12 ? p12.pctVal : 0,
         total: pA ? pA.pctVal : 0,
-        count: pA ? pA.count : 0,
-        rarity: pA ? pA.rarity : 'N'
+        count: pA ? pA.count : 0
       };
     }
 
@@ -1964,7 +1696,7 @@
       currentSearchSong = songName;
       const st = getSongStats(songName);
       document.getElementById('prob-display').style.display = 'block';
-      document.getElementById('prob-song-title').innerHTML = `${songName} <span class="badge ${st.rarity}" style="vertical-align:middle;margin-left:8px;">${st.rarity}</span> <span style="font-size:.8rem;color:var(--text-secondary);font-weight:normal;">(點擊看詳情)</span>`;
+      document.getElementById('prob-song-title').innerHTML = `${songName} <span style="font-size:.8rem;color:var(--text-secondary);font-weight:normal;">(點擊看詳情)</span>`;
       document.getElementById('prob-4').innerText = st.recent4 + '%';
       document.getElementById('prob-8').innerText = st.recent8 + '%';
       document.getElementById('prob-12').innerText = st.recent12 + '%';
@@ -1976,8 +1708,6 @@
       songName = songName.trim();
       const st = getSongStats(songName);
       document.getElementById('modal-name').innerText = songName;
-      document.getElementById('modal-badge').className = `badge ${st.rarity}`;
-      document.getElementById('modal-badge').innerText = st.rarity;
       document.getElementById('modal-prob').innerText = `總場次機率 ${st.total}%`;
       document.getElementById('modal-cnt').innerText = `(共出現 ${st.count} 次)`;
 
@@ -2187,292 +1917,6 @@
       });
     });
 
-    function initTechView() {
-      if (!techInited) {
-        setupTechSearch();
-        setupPKSearch();
-        renderTechTopStocks();
-
-        document.querySelectorAll('.mode-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            techChartMode = btn.getAttribute('data-mode');
-            document.getElementById('pk-area').style.display = techChartMode === 'pk' ? 'block' : 'none';
-            document.getElementById('tech-indicators').style.display = techChartMode === 'single' ? 'grid' : 'none';
-            document.getElementById('tech-comment-card').style.display = techChartMode === 'single' ? 'block' : 'none';
-            renderTechChart();
-          });
-        });
-        techInited = true;
-      }
-      renderPortfolioCard();
-      renderMarketIndexChart();
-      if (techCurrentSong) renderTechChart();
-    }
-
-    function togglePortfolio() {
-      const el = document.getElementById('portfolio-detail-list');
-      const chevron = document.getElementById('portfolio-chevron');
-      if (el.style.display === 'none') {
-        el.style.display = 'block';
-        if (chevron) chevron.classList.add('open');
-      } else {
-        el.style.display = 'none';
-        if (chevron) chevron.classList.remove('open');
-      }
-    }
-
-    function renderPortfolioCard() {
-      const el = document.getElementById('tech-portfolio-content');
-      const detailList = document.getElementById('portfolio-detail-list');
-      detailList.innerHTML = '';
-
-      if (currentUser) {
-        let songCounts = {};
-        currentUser.attendedIds.forEach(id => {
-          const ev = appData.events.find(e => e.id === id);
-          if (ev) ev.setlist.forEach(s => { songCounts[s.songName] = (songCounts[s.songName] || 0) + 1; });
-        });
-
-        const allStats = getGlobalSongStats();
-        let totalValue = 0;
-        const ownedItems = [];
-
-        Object.keys(songCounts).forEach(song => {
-          if (!allStats[song]) return;
-          const sHist = allStats[song].history;
-          const latest = sHist[sHist.length - 1];
-          const price = latest ? latest.totalPrice : 100;
-          const count = songCounts[song];
-          const sum = price * count;
-          totalValue += sum;
-          ownedItems.push({ song, price, count, sum });
-        });
-
-        const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId;
-
-        el.innerHTML = `
-      <div class="portfolio-header" onclick="togglePortfolio()">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;">
-          <div>
-            <div style="font-size:.85rem;color:var(--text-secondary);font-weight:600;">您的金曲資產總值 (${displayName})</div>
-            <div style="font-size:2rem;font-weight:700;color:var(--accent-dark);margin-top:.2rem;">$${totalValue.toLocaleString()} 分</div>
-          </div>
-          <div style="font-size:.85rem;color:var(--accent-dark);font-weight:600;display:flex;align-items:center;gap:4px;">
-            點擊查看持股明細 <span id="portfolio-chevron" class="portfolio-chevron">▼</span>
-          </div>
-        </div>
-      </div>`;
-
-        ownedItems.sort((a, b) => b.sum - a.sum);
-        if (ownedItems.length === 0) {
-          detailList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);font-size:.9rem;">目前尚無解鎖持股，快去「詳細場次」打卡記錄您的熱血冒險吧！✨</div>';
-        } else {
-          detailList.innerHTML = ownedItems.map(item => `
-        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--border);padding:.6rem 0;">
-          <div style="font-weight:500; cursor:pointer;" onclick="openSongModal('${esc(item.song)}')">${item.song}</div>
-          <div style="text-align:right;">
-            <div style="font-size:.8rem;color:var(--text-secondary);">$${item.price.toLocaleString()} × ${item.count} 次</div>
-            <div style="font-weight:700;color:var(--accent-dark);">$${item.sum.toLocaleString()} 分</div>
-          </div>
-        </div>
-      `).join('');
-        }
-      } else {
-        el.innerHTML = `
-      <div style="text-align:center;padding:.5rem 0;">
-        <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.8rem;">✨ 登入後即可解鎖您的專屬音樂資產總值與詳細持股明細！</div>
-        <button class="btn" onclick="switchTab('view-journey')">前往登入</button>
-      </div>`;
-        detailList.style.display = 'none';
-      }
-    }
-
-    function renderMarketIndexChart() {
-      if (marketChartInst) { marketChartInst.destroy(); marketChartInst = null; }
-      const ctx = document.getElementById('tech-market-chart').getContext('2d');
-      const evs = getChronologicalEvents();
-      const allStats = getGlobalSongStats();
-      const labels = evs.map(ev => ev.date.slice(4) + ' ' + ev.name);
-
-      const eventValues = evs.map((ev, idx) => {
-        let totalValue = 0;
-        ev.setlist.forEach(s => {
-          const songHist = allStats[s.songName]?.history;
-          if (songHist && songHist[idx]) {
-            totalValue += songHist[idx].totalPrice;
-          }
-        });
-        return totalValue;
-      });
-
-      const ma5 = eventValues.map((val, idx, arr) => {
-        if (idx < 4) return null;
-        const slice = arr.slice(idx - 4, idx + 1);
-        return Math.round(slice.reduce((a, b) => a + b, 0) / 5);
-      });
-
-      marketChartInst = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels, datasets: [
-            { type: 'line', label: '5場動能均線 (MA5)', data: ma5, borderColor: '#AF52DE', backgroundColor: '#AF52DE', borderWidth: 2, pointRadius: 0, tension: 0.3, yAxisID: 'y' },
-            { type: 'bar', label: '單場總感動積分 (熱血成交量)', data: eventValues, backgroundColor: 'rgba(236,112,103,0.6)', borderRadius: 4, yAxisID: 'y' }
-          ]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { mode: 'index', intersect: false } },
-          scales: { x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45, maxTicksLimit: 12, callback: function (val) { let label = this.getLabelForValue(val); return label.length > 10 ? label.slice(0, 10) + '...' : label; } } }, y: { title: { display: true, text: '感動積分 ($)' }, ticks: { callback: v => '$' + v } } }
-        }
-      });
-    }
-
-    function setupTechSearch() {
-      const input = document.getElementById('tech-search');
-      const results = document.getElementById('tech-search-results');
-      input.addEventListener('input', () => {
-        const val = input.value.trim().toLowerCase();
-        const list = val ? appData.songs.filter(s => s.toLowerCase().includes(val)) : appData.songs;
-        renderDropdown(results, list, song => { input.value = song; techCurrentSong = song; results.style.display = 'none'; if (techChartMode === 'single') renderTechSingleIndicators(); renderTechChart(); });
-      });
-      document.addEventListener('click', e => { if (e.target !== input) results.style.display = 'none'; });
-    }
-    function showTechSearchAll() {
-      const results = document.getElementById('tech-search-results');
-      renderDropdown(results, appData.songs, song => { document.getElementById('tech-search').value = song; techCurrentSong = song; results.style.display = 'none'; if (techChartMode === 'single') renderTechSingleIndicators(); renderTechChart(); });
-    }
-
-    function renderTechTopStocks() {
-      const stats = getGlobalSongStats();
-      const currentData = appData.songs.map(song => {
-        const s = stats[song];
-        const latest = s.history[s.history.length - 1];
-        return {
-          name: song,
-          price: latest ? latest.totalPrice : 100,
-          count: latest ? latest.count : 0
-        };
-      });
-
-      const top5 = [...currentData].sort((a, b) => b.price - a.price).slice(0, 5);
-      const common5 = [...currentData].sort((a, b) => b.count - a.count).slice(0, 5);
-
-      document.getElementById('tech-rare-top5').innerHTML = top5.map((p, i) => `<div class="stock-row" onclick="selectTechSong('${esc(p.name)}')"><span class="stock-name">${i + 1}. ${p.name}</span><span class="stock-price high">$${p.price.toLocaleString()} 分</span></div>`).join('');
-      document.getElementById('tech-common-top5').innerHTML = common5.map((p, i) => `<div class="stock-row" onclick="selectTechSong('${esc(p.name)}')"><span class="stock-name">${i + 1}. ${p.name} <span style="font-size:0.75rem; color:var(--text-secondary); font-weight:normal;">(${p.count}次)</span></span><span class="stock-price low">$${p.price.toLocaleString()} 分</span></div>`).join('');
-    }
-
-    function selectTechSong(songName) {
-      document.getElementById('tech-search').value = songName;
-      techCurrentSong = songName;
-      techChartMode = 'single';
-      document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === 'single'));
-      document.getElementById('pk-area').style.display = 'none';
-      document.getElementById('tech-indicators').style.display = 'grid';
-      document.getElementById('tech-comment-card').style.display = 'block';
-      renderTechSingleIndicators();
-      renderTechChart();
-    }
-
-    function renderTechSingleIndicators() {
-      if (!techCurrentSong) return;
-      const sData = getGlobalSongStats()[techCurrentSong];
-      const latest = sData.history[sData.history.length - 1] || { pct: 0, momentum: 0, rarityPrice: 100, comboBonus: 0, totalPrice: 100 };
-
-      document.getElementById('tech-rarity-price').innerText = `$${latest.rarityPrice.toLocaleString()}`;
-      document.getElementById('tech-combo-bonus').innerText = `$${latest.comboBonus.toLocaleString()}`;
-      document.getElementById('tech-momentum-val').innerText = latest.momentum;
-      document.getElementById('tech-total-price').innerText = `$${latest.totalPrice.toLocaleString()}`;
-
-      let sig = '🌟 穩健閃耀', cls = 'sig-neutral';
-      if (latest.momentum === 0 && latest.rarityPrice > 800) { sig = '💎 珍藏寶藏 (期待爆發)'; cls = 'sig-hot'; }
-      else if (latest.comboBonus > latest.rarityPrice && latest.momentum > 15) { sig = '🔥 熱血飆升動能'; cls = 'sig-hot'; }
-      else if (latest.pct > 70) { sig = '🎵 國民必聽金曲'; cls = 'sig-cold'; }
-
-      const sigEl = document.getElementById('tech-signal'); sigEl.innerText = sig; sigEl.className = `sig-badge ${cls}`;
-
-      let comment = `《${techCurrentSong}》目前的感動積分總價值為 $${latest.totalPrice.toLocaleString()} 分。`;
-      if (latest.comboBonus > latest.rarityPrice) {
-        comment += ` 這首歌近期現場熱度極高（熱動能高達 ${latest.momentum}），展現出強大的國民傳唱度與現場凝聚力！`;
-      } else {
-        comment += ` 這首歌擁有絕佳的珍藏指數評級（出現機率 ${latest.pct}%），屬於物以稀為貴的珍藏級金曲！`;
-      }
-      document.getElementById('tech-comment').innerText = comment;
-    }
-
-    function renderTechChart() {
-      if (techChartInst) { techChartInst.destroy(); techChartInst = null; }
-      const ctx = document.getElementById('tech-main-chart').getContext('2d');
-      const evs = getChronologicalEvents();
-      const labels = evs.map(ev => ev.date.slice(4) + ' ' + ev.name);
-      const allStats = getGlobalSongStats();
-
-      if (techChartMode === 'single') {
-        if (!techCurrentSong) { document.getElementById('tech-chart-title').innerText = '請先選擇歌曲'; return; }
-        document.getElementById('tech-chart-title').innerText = `📉 「${techCurrentSong}」感動積分雙核心走勢分析`;
-        renderTechSingleIndicators();
-
-        const sData = allStats[techCurrentSong].history;
-        const totalData = sData.map(h => h.totalPrice);
-        const rarityData = sData.map(h => h.rarityPrice);
-        const comboData = sData.map(h => h.comboBonus);
-
-        techChartInst = new Chart(ctx, {
-          data: {
-            labels,
-            datasets: [
-              { type: 'bar', label: '珍藏指數 ($)', data: rarityData, backgroundColor: 'rgba(175,82,222,0.75)', stack: 'stack0', borderRadius: 2 },
-              { type: 'bar', label: '熱力加成 ($)', data: comboData, backgroundColor: 'rgba(236,112,103,0.8)', stack: 'stack0', borderRadius: 2 },
-              { type: 'line', label: '感動積分線 ($)', data: totalData, borderColor: '#3D3833', backgroundColor: 'transparent', borderWidth: 3, pointRadius: 2, tension: 0.3 }
-            ]
-          },
-          options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { mode: 'index', intersect: false } },
-            scales: {
-              x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45, maxTicksLimit: 12, callback: function (val) { let label = this.getLabelForValue(val); return label.length > 10 ? label.slice(0, 10) + '...' : label; } } },
-              y: { stacked: true, title: { display: true, text: '感動積分 ($)' }, ticks: { callback: v => '$' + v } }
-            }
-          }
-        });
-      } else if (techChartMode === 'pk') {
-        if (!pkSongs.length) { document.getElementById('tech-chart-title').innerText = '請在上方搜尋並加入比對歌曲'; return; }
-        document.getElementById('tech-chart-title').innerText = `⚔️ 多曲 PK：${pkSongs.join(' vs ')}`;
-
-        const datasets = pkSongs.map((song, i) => {
-          const data = evs.map((_, idx) => allStats[song].history[idx].totalPrice);
-          return { label: song, data, borderColor: PK_COLORS[i], backgroundColor: PK_COLORS[i] + '15', borderWidth: 2.5, pointRadius: 2.5, fill: false, tension: 0.3 };
-        });
-
-        techChartInst = new Chart(ctx, { type: 'line', data: { labels, datasets }, options: chartOptions1Y('感動積分 ($)', 100, undefined) });
-      }
-    }
-
-    function chartOptions1Y(yLabel, yMin, yMax) {
-      return {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { position: 'top', labels: { font: { size: 11 } } }, tooltip: { mode: 'index', intersect: false } },
-        scales: {
-          x: { ticks: { font: { size: 10 }, maxRotation: 45, maxTicksLimit: 12, callback: function (val) { let label = this.getLabelForValue(val); return label.length > 10 ? label.slice(0, 10) + '...' : label; } }, grid: { display: false } },
-          y: { min: yMin, max: yMax, title: { display: true, text: yLabel }, ticks: { callback: v => '$' + v } }
-        }
-      };
-    }
-
-    function setupPKSearch() {
-      const input = document.getElementById('pk-search');
-      const results = document.getElementById('pk-search-results');
-      input.addEventListener('input', () => {
-        const val = input.value.trim().toLowerCase();
-        const list = val ? appData.songs.filter(s => s.toLowerCase().includes(val) && !pkSongs.includes(s)) : appData.songs.filter(s => !pkSongs.includes(s));
-        renderDropdown(results, list, song => { input.value = ''; results.style.display = 'none'; addPKSong(song); });
-      });
-      document.addEventListener('click', e => { if (e.target !== input) results.style.display = 'none'; });
-    }
-    function addPKSong(song) { if (pkSongs.includes(song) || pkSongs.length >= 3) return; pkSongs.push(song); renderPKChips(); renderTechChart(); }
-    function removePKSong(song) { pkSongs = pkSongs.filter(s => s !== song); renderPKChips(); renderTechChart(); }
-    function renderPKChips() { document.getElementById('pk-count').innerText = pkSongs.length; document.getElementById('pk-chips').innerHTML = pkSongs.map((s, i) => `<div class="pk-chip"><span class="pk-color-dot" style="background:${PK_COLORS[i]};"></span>${s}<button class="pk-chip-x" onclick="removePKSong('${esc(s)}')" title="移除">✕</button></div>`).join(''); }
-
     function saveLoginHistory(id) { let hist = getLoginHistory().filter(h => h !== id); hist.unshift(id); if (hist.length > 5) hist = hist.slice(0, 5); localStorage.setItem(LS_HISTORY, JSON.stringify(hist)); localStorage.setItem(LS_AUTO, id); }
     function getLoginHistory() { try { return JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch { return []; } }
     function loadLoginHistory() { const hist = getLoginHistory(); const area = document.getElementById('login-history-area'); const chips = document.getElementById('login-history-chips'); if (!hist.length) { area.style.display = 'none'; return; } area.style.display = 'block'; chips.innerHTML = hist.map(id => `<div class="id-chip-btn" onclick="quickLogin('${id}')">${id}</div>`).join(''); }
@@ -2587,12 +2031,12 @@
       const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId;
       document.getElementById('events-login-status').innerText = `已登入: ${displayName}`;
       updateNavProfileDisplay(); document.getElementById('journey-auth').style.display = 'none'; document.getElementById('journey-dashboard').style.display = 'block'; document.getElementById('user-nickname-input').value = currentUser.nickname || '';
-      renderEventsList(); updateDashboard(); renderPortfolioCard();
+      renderEventsList(); updateDashboard();
       if (!silent) showToast(`✨ 歡迎回來，${displayName}！準備好迎接今天的音樂冒險了嗎？`);
     }
 
     document.getElementById('btn-logout').addEventListener('click', () => {
-      localStorage.removeItem(LS_AUTO); currentUser = null; document.getElementById('events-login-status').innerText = '未登入'; updateNavProfileDisplay(); document.getElementById('journey-dashboard').style.display = 'none'; document.getElementById('journey-auth').style.display = 'block'; document.getElementById('login-id').value = ''; loadLoginHistory(); renderEventsList(); renderPortfolioCard();
+      localStorage.removeItem(LS_AUTO); currentUser = null; document.getElementById('events-login-status').innerText = '未登入'; updateNavProfileDisplay(); document.getElementById('journey-dashboard').style.display = 'none'; document.getElementById('journey-auth').style.display = 'block'; document.getElementById('login-id').value = ''; loadLoginHistory(); renderEventsList();
     });
     document.getElementById('btn-edit-events').addEventListener('click', () => switchTab('view-events'));
 
@@ -2662,7 +2106,7 @@ function renderHeardSongs() { const sorted = [...heardSongs].sort((a, b) => { co
       if (ids.length >= 25) title = '🌟 編織星空的人'; else if (ids.length >= 15) title = '🌌 黑暗的盡頭是你和脆'; else if (ids.length >= 8) title = '🚅 離開與到來'; else if (ids.length >= 3) title = '🦖 揹上快樂北上';
       document.getElementById('journey-title').innerText = title;
 
-      heardSongs = Object.keys(songCounts).map(name => { const st = getSongStats(name); return { name, count: songCounts[name], pct: st.total, rarity: st.rarity }; });
+      heardSongs = Object.keys(songCounts).map(name => { const st = getSongStats(name); return { name, count: songCounts[name], pct: st.total }; });
       renderHeardSongs();
 
       const attendedListEl = document.getElementById('dash-attended-events-list');
@@ -2747,7 +2191,7 @@ function renderHeardSongs() { const sorted = [...heardSongs].sort((a, b) => { co
         .then(res => res.json())
         .then(res => {
           if (!res.success) { el.innerHTML = '<div style="color:var(--dn);">讀取失敗</div>'; return; }
-          if (!res.events.length) { el.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:2rem 0;">目前沒有待審核的場次，大家都很棒！🎉</div>'; return; }
+          if (!res.events.length) { el.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:2rem 0;">目前沒有待審核的場次</div>'; return; }
 
           el.innerHTML = res.events.map(ev => `
         <div class="card pending-card">
