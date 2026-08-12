@@ -12,6 +12,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CRISPY 脆樂團 演出資訊</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦕</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
@@ -436,6 +437,50 @@
       background: var(--accent);
       color: #fff;
       border-color: var(--accent);
+    }
+
+    .form-tab-bar {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-tab {
+      padding: .5rem 1rem;
+      border-radius: 20px;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: .2s;
+      color: var(--text-secondary);
+    }
+
+    .form-tab:hover {
+      border-color: var(--accent);
+      color: var(--accent-dark);
+    }
+
+    .form-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .form-embed-wrap {
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .form-embed-wrap iframe {
+      width: 100%;
+      height: 1400px;
+      border: none;
+      display: block;
     }
 
     .custom-input {
@@ -1044,7 +1089,7 @@
 
   <div id="global-loader">
     <div class="spinner"></div>
-    <div style="color:var(--text-secondary);font-weight:500;margin-top:.5rem;">準備好編織你的星空了嗎... ✨</div>
+    <div style="color:var(--text-secondary);font-weight:500;margin-top:.5rem;">我就像牆壁上的時鐘一直在轉圈圈⭕</div>
   </div>
   <div id="toast"></div>
 
@@ -1092,6 +1137,7 @@
         <div class="nav-item" data-target="view-events">詳細場次</div>
         <div class="nav-item" data-target="view-report">場次補充</div>
         <div class="nav-item" data-target="view-random">隨機聆聽</div>
+        <div class="nav-item" data-target="view-forms">表單專區</div>
       </div>
     </div>
   </nav>
@@ -1162,7 +1208,7 @@
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1rem;">
         <div>
           <h2>詳細場次紀錄</h2>
-          <p style="color:var(--text-secondary);">勾選您參與過的每一場精彩演出，記錄屬於您的音樂冒險！✨</p>
+          <p style="color:var(--text-secondary);">勾選您參與過的每一場精彩演出，編織屬於您的星空✨</p>
         </div>
         <div id="events-login-status" style="font-size:.85rem;font-weight:600;color:var(--accent-dark);">未登入</div>
       </div>
@@ -1278,7 +1324,7 @@
     <!-- ===== REPORT ===== -->
     <div id="view-report" class="view">
       <h2>📝 場次補充回報</h2>
-      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">感謝您熱心回報完整歌單，讓脆樂團的音樂回憶更加完整！✨</p>
+      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">感謝您熱心回報完整歌單，讓脆脆和脆粉們的音樂回憶更加完整！✨</p>
       <div class="card">
         <h3 style="margin-bottom:1.5rem;">✏️ 填寫場次資訊</h3>
 
@@ -1336,6 +1382,20 @@
           <div style="color:var(--text-secondary);">按下面的按鈕，抽一首歌來聽吧 🎵</div>
         </div>
         <button class="btn" id="btn-draw-song" style="margin-top:1.5rem;">🎲 抽一首歌</button>
+      </div>
+    </div>
+
+    <!-- ===== FORMS ===== -->
+    <div id="view-forms" class="view">
+      <h2>📋 表單專區</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">脆樂團的大挑戰，還有想跟開發者說的話，都在這裡！</p>
+      <div class="form-tab-bar" id="form-tabs">
+        <div class="form-tab active" data-form="tmi">TMI 大挑戰</div>
+        <div class="form-tab" data-form="mv">MV 大挑戰</div>
+        <div class="form-tab" data-form="feedback">網站意見回饋</div>
+      </div>
+      <div class="form-embed-wrap">
+        <iframe id="form-iframe" src="" title="表單"></iframe>
       </div>
     </div>
 
@@ -1492,9 +1552,27 @@
       window.scrollTo(0, 0);
 
       if (id === 'view-report') loadPendingEvents();
+      if (id === 'view-forms' && !formsInited) { formsInited = true; switchFormTab('tmi'); }
     }
 
     let songLinksPromise = null;
+
+    // 📋 表單專區設定
+    let formsInited = false;
+    const FORM_URLS = {
+      tmi: 'https://docs.google.com/forms/d/e/1FAIpQLSeZQYQDQXsnDb1D6JiiSsl8WmlvJNT22DXnT0L0rvqTb7eyWA/viewform?embedded=true',
+      mv: 'https://docs.google.com/forms/d/e/1FAIpQLSfOv6KEi9koLgxTJg1Jqlkakh1ORT0NH7virjINOxBgHeMBWg/viewform?embedded=true',
+      feedback: 'https://docs.google.com/forms/d/e/1FAIpQLSeo-ZNSna6E5Pqd1GwzQtCUrEv6ATkOKs5ON7VU3FqW1sUV8g/viewform?embedded=true'
+    };
+
+    function switchFormTab(key) {
+      document.querySelectorAll('.form-tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-form') === key));
+      document.getElementById('form-iframe').src = FORM_URLS[key];
+    }
+
+    document.querySelectorAll('.form-tab').forEach(tab => {
+      tab.addEventListener('click', () => switchFormTab(tab.getAttribute('data-form')));
+    });
 
     // 🎧 讀取每首歌的收聽連結（跟主資料分開讀，失敗也不影響主功能；失敗會自動重試一次）
     function loadSongLinks(isRetry) {
