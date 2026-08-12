@@ -1182,12 +1182,9 @@
         <div class="card">
           <h3 style="font-size:1rem;margin-bottom:1rem;">我有專屬 ID</h3>
           <div style="display:flex;gap:.5rem;">
-            <input type="text" id="login-id" placeholder="輸入 ID (例: CR-A1B2)" style="flex:1;text-transform:uppercase;">
+            <input type="text" id="login-id" list="login-history-list" placeholder="輸入 ID (例: CR-A1B2)" style="flex:1;text-transform:uppercase;">
+            <datalist id="login-history-list"></datalist>
             <button class="btn" id="btn-login">登入</button>
-          </div>
-          <div id="login-history-area" style="margin-top:.8rem;display:none;">
-            <div style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.4rem;">快速登入：</div>
-            <div class="id-history" id="login-history-chips"></div>
           </div>
         </div>
         <div style="margin:2rem 0;color:var(--text-secondary);position:relative;text-align:center;">
@@ -1497,12 +1494,26 @@
       if (id === 'view-report') loadPendingEvents();
     }
 
-    // 🎧 讀取每首歌的收聽連結（跟主資料分開讀，失敗也不影響主功能）
-    function loadSongLinks() {
-      fetch(`${GAS_API_URL}?action=getSongLinks`)
+    let songLinksPromise = null;
+
+    // 🎧 讀取每首歌的收聽連結（跟主資料分開讀，失敗也不影響主功能；失敗會自動重試一次）
+    function loadSongLinks(isRetry) {
+      const p = fetch(`${GAS_API_URL}?action=getSongLinks`)
         .then(res => res.json())
-        .then(res => { if (res.success) songLinks = res.links || {}; })
-        .catch(() => {});
+        .then(res => {
+          if (res.success) {
+            songLinks = res.links || {};
+          } else if (!isRetry) {
+            return new Promise(resolve => setTimeout(resolve, 1000)).then(() => loadSongLinks(true));
+          }
+        })
+        .catch(() => {
+          if (!isRetry) {
+            return new Promise(resolve => setTimeout(resolve, 1000)).then(() => loadSongLinks(true));
+          }
+        });
+      if (!isRetry) songLinksPromise = p;
+      return p;
     }
 
     // 🚀 改用 Fetch 向 GAS 請求資料（失敗自動重試一次，擋掉 GAS 偶發性的錯誤頁面）
@@ -1520,7 +1531,7 @@
             setTimeout(() => loadMainData(true), 1000);
           } else {
             document.getElementById('global-loader').style.display = 'none';
-            alert('載入失敗: ' + (data && data.error ? data.error : '資料格式無法辨識'));
+            alert('載入失敗: ' + (data && data.error ? data.error : '資料格式無法辨識') + '\n\n請重新整理頁面再試一次');
           }
         })
         .catch(err => {
@@ -1528,7 +1539,7 @@
             setTimeout(() => loadMainData(true), 1000);
           } else {
             document.getElementById('global-loader').style.display = 'none';
-            alert('伺服器連線錯誤: ' + err);
+            alert('伺服器連線錯誤: ' + err + '\n\n請重新整理頁面再試一次');
           }
         });
     }
@@ -1855,11 +1866,28 @@
     }
 
     document.getElementById('btn-draw-song').addEventListener('click', () => {
-      const allSongs = Object.keys(songLinks);
-      const pool = allSongs.length ? allSongs : appData.songs; // songLinks 還沒載入完成時的備案
-      if (!pool.length) return;
-      const song = pool[Math.floor(Math.random() * pool.length)];
-      renderRandomSongResult(song);
+      const drawBtn = document.getElementById('btn-draw-song');
+
+      const doDraw = () => {
+        const allSongs = Object.keys(songLinks);
+        const pool = allSongs.length ? allSongs : appData.songs; // songLinks 真的抓不到時的備案
+        if (!pool.length) return;
+        const song = pool[Math.floor(Math.random() * pool.length)];
+        renderRandomSongResult(song);
+      };
+
+      if (Object.keys(songLinks).length > 0) {
+        doDraw();
+        return;
+      }
+
+      drawBtn.disabled = true;
+      drawBtn.innerText = '載入中…';
+      (songLinksPromise || loadSongLinks()).finally(() => {
+        drawBtn.disabled = false;
+        drawBtn.innerText = '🎲 抽一首歌';
+        doDraw();
+      });
     });
 
     function drawModalChart(songName) {
@@ -2050,8 +2078,7 @@
 
     function saveLoginHistory(id) { let hist = getLoginHistory().filter(h => h !== id); hist.unshift(id); if (hist.length > 5) hist = hist.slice(0, 5); localStorage.setItem(LS_HISTORY, JSON.stringify(hist)); localStorage.setItem(LS_AUTO, id); }
     function getLoginHistory() { try { return JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch { return []; } }
-    function loadLoginHistory() { const hist = getLoginHistory(); const area = document.getElementById('login-history-area'); const chips = document.getElementById('login-history-chips'); if (!hist.length) { area.style.display = 'none'; return; } area.style.display = 'block'; chips.innerHTML = hist.map(id => `<div class="id-chip-btn" onclick="quickLogin('${id}')">${id}</div>`).join(''); }
-    function quickLogin(id) { document.getElementById('login-id').value = id; document.getElementById('btn-login').click(); }
+    function loadLoginHistory() { const hist = getLoginHistory(); document.getElementById('login-history-list').innerHTML = hist.map(id => `<option value="${id}">`).join(''); }
 
     // 🔑 自動登入（改用 fetch GET）
     function tryAutoLogin() {
