@@ -360,6 +360,20 @@
       text-decoration: underline;
     }
 
+    .listen-row {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      text-align: left;
+    }
+
+    @media (max-width: 480px) {
+      .listen-row {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
     .prob-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1038,7 +1052,7 @@
   <div id="song-modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeSongModal()">✕</button>
-      <div style="display:flex;gap:1.2rem;align-items:center;margin-bottom:1.5rem;">
+      <div class="listen-row" style="margin-bottom:1.5rem;">
         <div id="modal-album-box" style="flex-shrink:0;"></div>
         <div style="flex:1;min-width:0;">
           <h2 id="modal-name" style="margin-bottom:.3rem;padding-right:2rem;"></h2>
@@ -1491,9 +1505,8 @@
         .catch(() => {});
     }
 
-    // 🚀 改用 Fetch 向 GAS 請求資料
-    document.addEventListener('DOMContentLoaded', () => {
-      loadSongLinks();
+    // 🚀 改用 Fetch 向 GAS 請求資料（失敗自動重試一次，擋掉 GAS 偶發性的錯誤頁面）
+    function loadMainData(isRetry) {
       fetch(GAS_API_URL)
         .then(res => res.json())
         .then(data => {
@@ -1503,15 +1516,26 @@
           } else if (data && data.success) {
             appData = data; // 相容日後若後端改回傳 {success, songs, events, upcoming} 格式
             initApp();
+          } else if (!isRetry) {
+            setTimeout(() => loadMainData(true), 1000);
           } else {
             document.getElementById('global-loader').style.display = 'none';
             alert('載入失敗: ' + (data && data.error ? data.error : '資料格式無法辨識'));
           }
         })
         .catch(err => {
-          document.getElementById('global-loader').style.display = 'none';
-          alert('伺服器連線錯誤: ' + err);
+          if (!isRetry) {
+            setTimeout(() => loadMainData(true), 1000);
+          } else {
+            document.getElementById('global-loader').style.display = 'none';
+            alert('伺服器連線錯誤: ' + err);
+          }
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSongLinks();
+      loadMainData(false);
     });
 
     // 🧩 把 GAS 回傳的「純陣列」事件資料，轉換成本站架構需要的 appData 格式
@@ -1817,7 +1841,7 @@
       const linksHtml = renderListenLinks(link);
       const el = document.getElementById('random-song-result');
       el.innerHTML = `
-        <div style="display:flex;gap:1.2rem;align-items:center;justify-content:center;text-align:left;">
+        <div class="listen-row" style="justify-content:center;">
           ${renderAlbumBox(link && link.album, 120)}
           <div style="min-width:0;">
             <div style="font-size:1.25rem;font-weight:700;margin-bottom:.4rem;cursor:pointer;" onclick="openSongModal('${esc(songName)}')">${songName}</div>
