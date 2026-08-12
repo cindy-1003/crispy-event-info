@@ -1,8 +1,9 @@
 <!-- ======================================================== -->
 <!-- 網站設定與版本資訊 -->
-<!-- 本站介面架構改編自「芒果醬 Mango Jump」活動網站 -->
+<!-- 改版時間：20260812 -->
+<!-- 網站開發者：y🌧️（Threads: https://www.threads.com/@raining_1123）-->
+<!-- 本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄」網站 -->
 <!-- 原始架構開發者：blues (Threads: https://www.threads.com/@blues_.g)，已取得原作者授權修改 -->
-<!-- 改版對象：CRISPY 脆樂團 演出資訊 -->
 <!-- ======================================================== -->
 <!DOCTYPE html>
 <html lang="zh-TW">
@@ -1037,15 +1038,21 @@
   <div id="song-modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeSongModal()">✕</button>
-      <h2 id="modal-name" style="margin-bottom:.3rem;padding-right:2rem;"></h2>
-      <div style="margin-bottom:1.5rem;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;">
-        <span id="modal-prob" style="font-weight:600;color:var(--accent-dark);"></span>
-        <span id="modal-cnt" style="color:var(--text-secondary);font-size:.9rem;"></span>
+      <div style="display:flex;gap:1.2rem;align-items:center;margin-bottom:1.5rem;">
+        <div id="modal-album-box" style="flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <h2 id="modal-name" style="margin-bottom:.3rem;padding-right:2rem;"></h2>
+          <div style="margin-bottom:.5rem;display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;">
+            <span id="modal-prob" style="font-weight:600;color:var(--accent-dark);"></span>
+            <span id="modal-cnt" style="color:var(--text-secondary);font-size:.9rem;"></span>
+          </div>
+          <div id="modal-listen-link" style="display:none;"></div>
+        </div>
       </div>
       <div id="modal-chart-wrap" style="margin-bottom:1.5rem;display:none;">
-        <h4 style="font-size:.85rem;color:var(--text-secondary);margin-bottom:.4rem;font-weight:600;">🎧 現場陪伴與累積次數成長曲線
+        <h4 style="font-size:.85rem;color:var(--text-secondary);margin-bottom:.4rem;font-weight:600;">🎧 現場累積次數成長曲線
         </h4>
-        <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:.6rem;">每一個現場的大合唱，都是這首歌最閃耀的回憶印記！</p>
+        <p style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:.6rem;">每一次現場的大合唱，都是無法取代的回憶！</p>
         <div style="position:relative;height:160px;"><canvas id="modal-chart"></canvas></div>
       </div>
       <h4 style="margin-bottom:.8rem;border-bottom:1px solid var(--border);padding-bottom:.5rem;">出現場次紀錄</h4>
@@ -1070,6 +1077,7 @@
         <div class="nav-item active" data-target="view-home">首頁</div>
         <div class="nav-item" data-target="view-events">詳細場次</div>
         <div class="nav-item" data-target="view-report">場次補充</div>
+        <div class="nav-item" data-target="view-random">隨機聆聽</div>
       </div>
     </div>
   </nav>
@@ -1264,7 +1272,7 @@
         <h3 style="margin-bottom:1.5rem;">✏️ 填寫場次資訊</h3>
 
         <div class="report-form-grid">
-          <div><label class="form-label">活動日期 *</label><input type="text" id="rpt-date" placeholder="例: 20260816"
+          <div><label class="form-label">活動日期 *</label><input type="text" id="rpt-date" placeholder="例: 20260815"
               maxlength="8"></div>
           <div><label class="form-label">活動名稱 *</label><input type="text" id="rpt-name" placeholder="例: 新北 河海音樂季">
           </div>
@@ -1308,15 +1316,27 @@
       </div>
     </div>
 
+    <!-- ===== RANDOM SONG PICKER ===== -->
+    <div id="view-random" class="view">
+      <h2>🎲 隨機聆聽</h2>
+      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">說得很簡單，卻那麼難，想不到要聽哪首歌啦</p>
+      <div class="card" style="text-align:center;padding:2.5rem 1.5rem;">
+        <div id="random-song-result">
+          <div style="color:var(--text-secondary);">按下面的按鈕，抽一首歌來聽吧 🎵</div>
+        </div>
+        <button class="btn" id="btn-draw-song" style="margin-top:1.5rem;">🎲 抽一首歌</button>
+      </div>
+    </div>
+
   </div>
 
   <footer
     style="max-width: 960px; margin: 2rem auto; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 0.82rem; color: var(--text-secondary); border-top: 1px solid var(--border); gap: 0.3rem;">
-    <div>改版時間：20260809</div>
-    <div>網站作者：<a
+    <div>改版時間：20260812</div>
+    <div>網站開發者：<a
         href="https://www.threads.com/@raining_1123" target="_blank"
         style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">y🌧️</a></div>
-    <div>本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄 」網站，原始架構開發者：<a
+    <div>本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄」網站，原始架構開發者：<a
         href="https://www.threads.com/@blues_.g" target="_blank"
         style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">blues</a>（已獲授權使用）</div>
   </footer>
@@ -1333,6 +1353,43 @@
     let heardSongs = [];
     let globalSongStats = null;
     let modalChartInst = null;
+    let songLinks = {};
+    const SPOTIFY_ICON_SVG = '<svg width="14" height="14" viewBox="0 0 16 16" fill="#1DB954" style="vertical-align:-2px;" xmlns="http://www.w3.org/2000/svg"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686m.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858m.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288"/></svg>';
+
+    const APPLE_MUSIC_ICON_SVG = '<svg width="14" height="14" viewBox="0 0 16 16" fill="#FA243C" style="vertical-align:-2px;" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="m10.995 0 .573.001q.241 0 .483.007c.35.01.705.03 1.051.093.352.063.68.166.999.329a3.36 3.36 0 0 1 1.47 1.468c.162.32.265.648.328 1 .063.347.084.7.093 1.051q.007.241.007.483l.001.573v5.99l-.001.573q0 .241-.008.483c-.01.35-.03.704-.092 1.05a3.5 3.5 0 0 1-.33 1 3.36 3.36 0 0 1-1.468 1.468 3.5 3.5 0 0 1-1 .33 7 7 0 0 1-1.05.092q-.241.007-.483.008l-.573.001h-5.99l-.573-.001q-.241 0-.483-.008a7 7 0 0 1-1.052-.092 3.6 3.6 0 0 1-.998-.33 3.36 3.36 0 0 1-1.47-1.468 3.6 3.6 0 0 1-.328-1 7 7 0 0 1-.093-1.05Q.002 11.81 0 11.568V5.005l.001-.573q0-.241.007-.483c.01-.35.03-.704.093-1.05a3.6 3.6 0 0 1 .329-1A3.36 3.36 0 0 1 1.9.431 3.5 3.5 0 0 1 2.896.1 7 7 0 0 1 3.95.008Q4.19.002 4.432 0h.573zm-.107 2.518-4.756.959H6.13a.66.66 0 0 0-.296.133.5.5 0 0 0-.16.31c-.004.027-.01.08-.01.16v5.952c0 .14-.012.275-.106.39-.095.115-.21.15-.347.177l-.31.063c-.393.08-.65.133-.881.223a1.4 1.4 0 0 0-.519.333 1.25 1.25 0 0 0-.332.995c.031.297.166.582.395.792.156.142.35.25.578.296.236.047.49.031.858-.043.196-.04.38-.102.555-.205a1.4 1.4 0 0 0 .438-.405 1.5 1.5 0 0 0 .233-.55c.042-.202.052-.386.052-.588V6.347c0-.276.08-.35.302-.404.024-.005 3.954-.797 4.138-.833.257-.049.378.025.378.294v3.524c0 .14-.001.28-.096.396-.094.115-.211.15-.348.178l-.31.062c-.393.08-.649.133-.88.223a1.4 1.4 0 0 0-.52.334 1.26 1.26 0 0 0-.34.994c.03.297.174.582.404.792a1.2 1.2 0 0 0 .577.294c.237.048.49.03.858-.044.197-.04.381-.098.556-.202a1.4 1.4 0 0 0 .438-.405q.173-.252.233-.549a2.7 2.7 0 0 0 .044-.589V2.865c0-.273-.143-.443-.4-.42-.04.003-.383.064-.424.073"/></svg>';
+
+    const YOUTUBE_ICON_SVG = '<svg width="14" height="14" viewBox="0 0 16 16" fill="#FF0000" style="vertical-align:-2px;" xmlns="http://www.w3.org/2000/svg"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/></svg>';
+
+    // KKBOX 目前沒有開源官方 icon 可用，先用通用音符圖示代替
+    const KKBOX_ICON_SVG = '<img src="icons/kkbox.png" width="14" height="14" style="vertical-align:-2px;border-radius:3px;">';
+    
+    const PLATFORMS = [
+      { key: 'spotify', label: 'Spotify', color: '#1DB954', icon: SPOTIFY_ICON_SVG },
+      { key: 'appleMusic', label: 'Apple Music', color: '#FA243C', icon: APPLE_MUSIC_ICON_SVG },
+      { key: 'youtubeMusic', label: 'YouTube Music', color: '#FF0000', icon: YOUTUBE_ICON_SVG },
+      { key: 'kkbox', label: 'KKBOX', color: '#00D3AA', icon: KKBOX_ICON_SVG }
+    ];
+
+    // 🎧 把某首歌的所有收聽連結組成 HTML（有幾個平台就顯示幾個）
+    function renderListenLinks(link) {
+      if (!link) return '';
+      return PLATFORMS
+        .filter(p => link[p.key])
+        .map(p => `<a href="${link[p.key]}" target="_blank" class="upc-map-link" style="color:${p.color};">${p.icon} ${p.label}</a>`)
+        .join('');
+    }
+
+    // 💿 畫專輯封面方塊：依專輯名稱組本機圖片路徑（先試 .jpg 再試 .png），失效時自動退回佔位圖
+    function renderAlbumBox(albumName, size) {
+      size = size || 120;
+      const base = albumName ? `covers/${encodeURIComponent(albumName)}` : '';
+      return `
+        <div style="position:relative;width:${size}px;height:${size}px;flex-shrink:0;">
+          <div style="width:${size}px;height:${size}px;border-radius:12px;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:${Math.round(size * 0.36)}px;">🎵</div>
+          ${base ? `<img src="${base}.jpg" alt="專輯封面" style="position:absolute;top:0;left:0;width:${size}px;height:${size}px;border-radius:12px;object-fit:cover;" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='${base}.png';}else{this.style.display='none';}">` : ''}
+        </div>
+      `;
+    }
 
     let reportSetlist = [];
     let dragSrcIdx = null;
@@ -1426,8 +1483,17 @@
       if (id === 'view-report') loadPendingEvents();
     }
 
+    // 🎧 讀取每首歌的收聽連結（跟主資料分開讀，失敗也不影響主功能）
+    function loadSongLinks() {
+      fetch(`${GAS_API_URL}?action=getSongLinks`)
+        .then(res => res.json())
+        .then(res => { if (res.success) songLinks = res.links || {}; })
+        .catch(() => {});
+    }
+
     // 🚀 改用 Fetch 向 GAS 請求資料
     document.addEventListener('DOMContentLoaded', () => {
+      loadSongLinks();
       fetch(GAS_API_URL)
         .then(res => res.json())
         .then(data => {
@@ -1711,6 +1777,18 @@
       document.getElementById('modal-prob').innerText = `總場次機率 ${st.total}%`;
       document.getElementById('modal-cnt').innerText = `(共出現 ${st.count} 次)`;
 
+      const link = songLinks[songName];
+      document.getElementById('modal-album-box').innerHTML = renderAlbumBox(link && link.album, 90);
+
+      const listenEl = document.getElementById('modal-listen-link');
+      const listenLinksHtml = renderListenLinks(link);
+      if (listenLinksHtml) {
+        listenEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem 1rem;font-size:.82rem;">${listenLinksHtml}</div>`;
+        listenEl.style.display = 'block';
+      } else {
+        listenEl.style.display = 'none';
+      }
+
       let html = '';
       appData.events.forEach(ev => {
         const m = ev.setlist.find(s => s.songName === songName);
@@ -1729,7 +1807,36 @@
       drawModalChart(songName);
       document.getElementById('song-modal').classList.add('show');
     }
+
     function closeSongModal() { document.getElementById('song-modal').classList.remove('show'); }
+
+    // 🎲 隨機抽一首歌
+    function renderRandomSongResult(songName) {
+      const st = getSongStats(songName);
+      const link = songLinks[songName];
+      const linksHtml = renderListenLinks(link);
+      const el = document.getElementById('random-song-result');
+      el.innerHTML = `
+        <div style="display:flex;gap:1.2rem;align-items:center;justify-content:center;text-align:left;">
+          ${renderAlbumBox(link && link.album, 120)}
+          <div style="min-width:0;">
+            <div style="font-size:1.25rem;font-weight:700;margin-bottom:.4rem;cursor:pointer;" onclick="openSongModal('${esc(songName)}')">${songName}</div>
+            <div style="color:var(--accent-dark);font-weight:600;margin-bottom:.7rem;font-size:.9rem;">總場次機率 ${st.total}% (共出現 ${st.count} 次)</div>
+            ${linksHtml
+              ? `<div style="display:grid;grid-template-columns:repeat(2,max-content);justify-content:center;gap:.5rem 1.5rem;font-size:.82rem;">${linksHtml}</div>`
+              : `<div style="color:var(--text-secondary);font-size:.85rem;">目前還沒有這首歌的收聽連結</div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    document.getElementById('btn-draw-song').addEventListener('click', () => {
+      const allSongs = Object.keys(songLinks);
+      const pool = allSongs.length ? allSongs : appData.songs; // songLinks 還沒載入完成時的備案
+      if (!pool.length) return;
+      const song = pool[Math.floor(Math.random() * pool.length)];
+      renderRandomSongResult(song);
+    });
 
     function drawModalChart(songName) {
       const evs = getChronologicalEvents();
