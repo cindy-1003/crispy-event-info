@@ -123,6 +123,17 @@
       padding-top: 0.3rem;
     }
 
+    @media (max-width: 600px) {
+      .nav-bottom-row {
+        justify-content: flex-start;
+      }
+
+      .nav-links {
+        gap: 1.1rem;
+        padding: 0 .3rem;
+      }
+    }
+
     .nav-bottom-row::-webkit-scrollbar {
       display: none;
     }
@@ -337,6 +348,8 @@
       font-weight: 600;
       font-size: 1.05rem;
       margin-bottom: 0.2rem;
+      word-break: keep-all;
+      text-wrap: balance;
     }
 
     .upc-meta {
@@ -355,6 +368,8 @@
       display: inline-flex;
       align-items: center;
       gap: 3px;
+      word-break: keep-all;
+      text-wrap: pretty;
     }
 
     .upc-map-link:hover {
@@ -570,6 +585,21 @@
       transition: .2s;
     }
 
+    @media (max-width: 480px) {
+      .event-card {
+        position: relative;
+      }
+
+      .chk-area {
+        position: absolute;
+        bottom: .8rem;
+        right: .8rem;
+        padding-right: 0;
+        margin-top: 0;
+        z-index: 1;
+      }
+    }
+
     .event-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
@@ -591,6 +621,7 @@
 
     .ev-content {
       flex: 1;
+      min-width: 0;
     }
 
     .ev-header {
@@ -608,6 +639,9 @@
       font-size: 1.1rem;
       font-weight: 600;
       margin-top: .2rem;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      text-wrap: balance;
     }
 
     .ev-note {
@@ -1089,7 +1123,7 @@
 
   <div id="global-loader">
     <div class="spinner"></div>
-    <div style="color:var(--text-secondary);font-weight:500;margin-top:.5rem;">我就像牆壁上的時鐘一直在轉圈圈⭕</div>
+    <div style="color:var(--text-secondary);font-weight:500;margin-top:.5rem;">我就像牆壁上的時鐘一直在轉圈圈</div>
   </div>
   <div id="toast"></div>
 
@@ -1124,7 +1158,7 @@
     <div class="nav-top-row">
       <div class="nav-brand">
         <div>🌊 CRISPY 脆樂團活動</div>
-        <div style="font-size: 0.68rem; color: var(--text-secondary); font-weight: normal; line-height: 1.2;">
+        <div style="font-size: 0.68rem; color: var(--text-secondary); font-weight: normal; line-height: 1.2; word-break: keep-all; text-wrap: pretty;">
           本站為粉絲自製之非官方無償分享平台，相關公告請以活動官方為主。</div>
       </div>
       <div class="nav-profile-btn" data-target="view-journey">
@@ -1149,10 +1183,10 @@
 
       <div class="card" id="upcoming-widget"
         style="display:none; background: linear-gradient(to right bottom, var(--bg-card), var(--accent-light)); border-color: rgba(236,112,103,0.2);">
-        <h3 style="color: var(--accent-dark); margin-bottom:0.5rem; display:flex; align-items:center; gap:8px;">
-          跟著脆脆一起走到宇宙的每個角落
+        <h3 style="color: var(--accent-dark); margin-bottom:0.5rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <span style="text-wrap:balance;">跟著脆脆一起走到宇宙的每個角落</span>
           <span
-            style="font-size:0.8rem; font-weight:600; color:#fff; background:var(--dn); padding:2px 8px; border-radius:12px;">近期活動</span>
+            style="font-size:0.8rem; font-weight:600; color:#fff; background:var(--dn); padding:2px 8px; border-radius:12px; white-space:nowrap; flex-shrink:0;">近期活動</span>
         </h3>
         <div id="upcoming-list"></div>
         <button class="btn btn-ghost btn-sm" id="btn-more-upcoming"
@@ -1208,9 +1242,9 @@
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:1rem;">
         <div>
           <h2>詳細場次紀錄</h2>
-          <p style="color:var(--text-secondary);">勾選您參與過的每一場精彩演出，編織屬於您的星空✨</p>
+          <p style="color:var(--text-secondary);word-break:keep-all;text-wrap:pretty;">勾選您參與過的每一場精彩演出，編織屬於您的星空✨</p>
         </div>
-        <div id="events-login-status" style="font-size:.85rem;font-weight:600;color:var(--accent-dark);">未登入</div>
+        <div id="events-login-status" style="font-size:.85rem;font-weight:600;color:var(--accent-dark);white-space:nowrap;flex-shrink:0;">未登入</div>
       </div>
       <div id="events-msg"
         style="color:var(--dn);font-weight:500;font-size:.95rem;margin-bottom:1rem;min-height:1.5rem;"></div>
@@ -1224,7 +1258,7 @@
     <div id="view-journey" class="view">
       <div id="journey-auth" style="text-align:center;max-width:420px;margin:0 auto;padding-top:2rem;">
         <h2>追呀追呀追去哪呢？</h2>
-        <p style="color:var(--text-secondary);margin-bottom:2rem;">建立或輸入專屬 ID，紀錄屬於您的音樂足跡與成就！✨</p>
+        <p style="color:var(--text-secondary);margin-bottom:2rem;word-break:keep-all;text-wrap:pretty;">建立或輸入專屬 ID，紀錄屬於您的音樂足跡與成就！✨</p>
         <div class="card">
           <h3 style="font-size:1rem;margin-bottom:1rem;">我有專屬 ID</h3>
           <div style="display:flex;gap:.5rem;">
@@ -1407,7 +1441,7 @@
     <div>網站開發者：<a
         href="https://www.threads.com/@raining_1123" target="_blank"
         style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">y🌧️</a></div>
-    <div>本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄」網站，原始架構開發者：<a
+    <div style="word-break: keep-all; text-wrap: pretty;">本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄 」網站，原始架構開發者：<a
         href="https://www.threads.com/@blues_.g" target="_blank"
         style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">blues</a>（已獲授權使用）</div>
   </footer>
@@ -1475,7 +1509,7 @@
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
     }
-    function esc(str) { return str.replace(/'/g, "\\'"); }
+    function esc(str) { return str.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
 
     function formatNoteWithLinks(noteStr) {
       if (!noteStr) return '';
@@ -2098,13 +2132,13 @@
       </div>
       <div class="ev-content">
         <div class="ev-header">
-          <div>
+          <div style="flex:1;min-width:0;">
             <div class="ev-title">${ev.name}</div>
             <div class="ev-meta">
               ${ev.timeStr ? `<span class="ev-time">🕒 ${ev.timeStr}</span>` : ''}
               ${locationHtml}
               ${ticketHtml}
-              ${ev.postLink ? `<a href="${ev.postLink}" target="_blank" class="upc-map-link">🔗 官方帳號 / 貼文</a>` : ''}
+              ${ev.postLink ? `<a href="${ev.postLink}" target="_blank" class="upc-map-link">🔗 官方帳號</a>` : ''}
             </div>
             ${formattedNote ? `<div class="ev-note">備註：${formattedNote}</div>` : ''}
           </div>
@@ -2261,7 +2295,7 @@
       });
     });
 
-    function updateNavProfileDisplay() { const btnLabel = document.getElementById('nav-btn-label'); if (currentUser) { const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId; btnLabel.innerHTML = `🎫 ${displayName}`; } else { btnLabel.innerHTML = `👣 我去哪流浪`; } }
+    function updateNavProfileDisplay() { const btnLabel = document.getElementById('nav-btn-label'); if (currentUser) { const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId; btnLabel.innerHTML = `🐾 ${displayName}`; } else { btnLabel.innerHTML = `👣 我去哪流浪`; } }
 
     function onLoginSuccess(silent) {
       const displayName = currentUser.nickname ? currentUser.nickname : currentUser.userId;
@@ -2277,7 +2311,17 @@
     document.getElementById('btn-edit-events').addEventListener('click', () => switchTab('view-events'));
 
     function setHeardSort(mode) { if (heardSortMode === mode) heardSortDir *= -1; else { heardSortMode = mode; heardSortDir = mode === 'pct' ? 1 : -1; } document.getElementById('sort-pct-btn').classList.toggle('active', mode === 'pct'); document.getElementById('sort-cnt-btn').classList.toggle('active', mode === 'count'); document.getElementById('sort-pct-btn').innerText = `出現率 ${mode === 'pct' ? (heardSortDir === 1 ? '↑' : '↓') : '↑'}`; document.getElementById('sort-cnt-btn').innerText = `聽過次數 ${mode === 'count' ? (heardSortDir === -1 ? '↓' : '↑') : '↑'}`; renderHeardSongs(); }
-function renderHeardSongs() { const sorted = [...heardSongs].sort((a, b) => { const va = heardSortMode === 'pct' ? a.pct : a.count; const vb = heardSortMode === 'pct' ? b.pct : b.count; return (va - vb) * heardSortDir; }); const el = document.getElementById('dash-heard-songs'); if (!sorted.length) { el.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:1rem 0;">目前尚未有收藏紀錄，快去打卡解鎖您的第一首歌吧！✨</div>'; return; } el.innerHTML = sorted.map((s, i) => `<div class="heard-row"><div><span style="color:var(--text-secondary);margin-right:8px;">#${i + 1}</span><span style="cursor:pointer;font-weight:500;" onclick="openSongModal('${esc(s.name)}')">${s.name}</span></div><div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:flex-end;"><span style="color:var(--text-secondary);font-size:.9rem;">出現率 ${s.pct}%</span><span style="font-weight:600;color:var(--accent-dark);">聽過 ${s.count} 次</span></div></div>`).join(''); }
+    function renderHeardSongs() { 
+      const sorted = [...heardSongs].sort((a, b) => { const va = heardSortMode === 'pct' ? a.pct : a.count; 
+      const vb = heardSortMode === 'pct' ? b.pct : b.count; return (va - vb) * heardSortDir; }); 
+      const el = document.getElementById('dash-heard-songs'); 
+      if (!sorted.length) { 
+        el.innerHTML = '<div style="color:var(--text-secondary);text-align:center;padding:1rem 0;">目前尚未有收藏紀錄，快去打卡解鎖您的第一首歌吧！✨</div>'; 
+        return;
+      } 
+      el.innerHTML = sorted.map((s, i) => `<div class="heard-row"><div style="display:flex;align-items:flex-start;min-width:0;"><span style="color:var(--text-secondary);margin-right:8px;flex-shrink:0;">#${i + 1}</span><span style="cursor:pointer;font-weight:500;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;min-width:0;" onclick="openSongModal('${esc(s.name)}')">${s.name}</span></div><div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0;"><span style="color:var(--text-secondary);font-size:.9rem;">出現率 ${s.pct}%</span><span style="font-weight:600;color:var(--accent-dark);">聽過 ${s.count} 次</span></div></div>`).join(''); 
+    }
+    
     // 🕒 從 "20:00 - 21:00" 這種文字裡算出分鐘數，events 若沒有 durationMins 欄位時自動用這個估算
     function parseDurationFromTimeStr(timeStr) {
       if (!timeStr) return 0;
@@ -2336,8 +2380,12 @@ function renderHeardSongs() { const sorted = [...heardSongs].sort((a, b) => { co
         .sort((a, b) => b.pct - a.pct);
       document.getElementById('dash-unlocked-cnt').innerText = unlocked.length;
       const ulEl = document.getElementById('dash-unlocked-songs');
-      if (!unlocked.length) { ulEl.innerHTML = '<div style="color:var(--up);font-weight:600;text-align:center;padding:1rem 0;">🎉 太厲害了！您已解鎖所有歌曲的現場演出！</div>'; } else { ulEl.innerHTML = unlocked.map((s, i) => `<div class="heard-row"><div><span style="color:var(--text-secondary);margin-right:8px;">#${i + 1}</span><span style="cursor:pointer;font-weight:500;" onclick="openSongModal('${esc(s.name)}')">${s.name}</span></div><div style="display:flex;align-items:center;gap:.5rem;"><span style="color:var(--text-secondary);font-size:.9rem;">出現率 ${s.pct}%</span></div></div>`).join(''); }
-
+      if (!unlocked.length) { 
+        ulEl.innerHTML = '<div style="color:var(--up);font-weight:600;text-align:center;padding:1rem 0;">🎉 太厲害了！您已解鎖所有歌曲的現場演出！</div>'; 
+      } 
+      else { 
+        ulEl.innerHTML = unlocked.map((s, i) => `<div class="heard-row"><div style="display:flex;align-items:flex-start;min-width:0;"><span style="color:var(--text-secondary);margin-right:8px;flex-shrink:0;">#${i + 1}</span><span style="cursor:pointer;font-weight:500;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;min-width:0;" onclick="openSongModal('${esc(s.name)}')">${s.name}</span></div><div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0;"><span style="color:var(--text-secondary);font-size:.9rem;">出現率 ${s.pct}%</span></div></div>`).join(''); 
+      }      
       let title = '🦕 我還是個孩子';
       if (ids.length >= 25) title = '🌟 編織星空的人'; else if (ids.length >= 15) title = '🌌 黑暗的盡頭是你和脆'; else if (ids.length >= 8) title = '🚅 離開與到來'; else if (ids.length >= 3) title = '🦖 揹上快樂北上';
       document.getElementById('journey-title').innerText = title;
