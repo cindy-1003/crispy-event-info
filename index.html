@@ -1123,7 +1123,7 @@
 
   <div id="global-loader">
     <div class="spinner"></div>
-    <div style="color:var(--text-secondary);font-weight:500;margin-top:.5rem;">我就像牆壁上的時鐘一直在轉圈圈</div>
+    <div id="loader-msg" style="color:var(--text-secondary);font-weight:500;margin-top:.5rem;">我就像牆壁上的時鐘一直在轉圈圈</div>
   </div>
   <div id="toast"></div>
 
@@ -1389,7 +1389,7 @@
           </div>
           <div class="setlist-area" id="setlist-area">
             <div id="setlist-empty"
-              style="color:var(--text-secondary);text-align:center;padding:1rem 0;font-size:.9rem;">尚未新增歌曲，請使用上方搜尋框加入
+              style="color:var(--text-secondary);text-align:center;padding:1rem 0;font-size:.9rem;word-break:keep-all;text-wrap:pretty;">尚未新增歌曲，請使用上方搜尋框加入
             </div>
             <div class="setlist-chips" id="setlist-chips"></div>
           </div>
@@ -1510,6 +1510,36 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
     function esc(str) { return str.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+
+    // ⏳ 載入畫面文字輪流顯示，避免等太久覺得無聊
+    const LOADER_MESSAGES = [
+      '準備好編織你的星空了嗎...✨',
+      '我就像牆壁上的時鐘一直在轉圈圈',
+      '相愛就是說了100次對不起 但網頁不會轉100圈(希望)',
+      '當你覺得煩惱的時候 就抽一首歌聽',
+      '看過這影片 點過這網頁 甚至還記得這網頁轉很久',
+      '還是會有一束光 看見了網頁就會跑出來了',
+      '請原諒我 請原諒我 應該快要轉好了',
+      '我存在過的每道痕跡 在網頁裡通通可以記下來',
+      '網頁啊 我一直都在等著你啊',
+      '想好要加入哪些活動了嗎',
+      '抱歉我沒梗了 轉這麼久開發者下跪道歉'
+    ];
+    let loaderMsgTimer = null;
+    function startLoaderMessages() {
+      const el = document.getElementById('loader-msg');
+      if (!el) return;
+      let i = 0;
+      el.innerText = LOADER_MESSAGES[0];
+      loaderMsgTimer = setInterval(() => {
+        i = (i + 1) % LOADER_MESSAGES.length;
+        el.innerText = LOADER_MESSAGES[i];
+      }, 5000);
+    }
+    function stopLoaderMessages() {
+      clearInterval(loaderMsgTimer);
+    }
+    startLoaderMessages();
 
     function formatNoteWithLinks(noteStr) {
       if (!noteStr) return '';
@@ -1642,6 +1672,7 @@
           } else if (!isRetry) {
             setTimeout(() => loadMainData(true), 1000);
           } else {
+            stopLoaderMessages();
             document.getElementById('global-loader').style.display = 'none';
             alert('載入失敗: ' + (data && data.error ? data.error : '資料格式無法辨識') + '\n\n請重新整理頁面再試一次');
           }
@@ -1650,6 +1681,7 @@
           if (!isRetry) {
             setTimeout(() => loadMainData(true), 1000);
           } else {
+            stopLoaderMessages();
             document.getElementById('global-loader').style.display = 'none';
             alert('伺服器連線錯誤: ' + err + '\n\n請重新整理頁面再試一次');
           }
@@ -1698,6 +1730,7 @@
     }
 
     function initApp() {
+      stopLoaderMessages();
       document.getElementById('global-loader').style.display = 'none';
       globalSongStats = null;
       setupHomeSearch();
