@@ -54,7 +54,7 @@
       top: 0;
       left: 0;
       right: 0;
-      height: var(--nav-h);
+      min-height: var(--nav-h);
       background: var(--blur-bg);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
@@ -1545,6 +1545,16 @@
       clearInterval(loaderMsgTimer);
     }
     startLoaderMessages();
+
+    // 📏 動態量測導覽列實際高度，避免說明文字換行時內容被蓋住
+    function syncNavHeight() {
+      const navEl = document.querySelector('nav');
+      if (navEl) {
+        document.body.style.paddingTop = navEl.offsetHeight + 'px';
+      }
+    }
+    window.addEventListener('load', syncNavHeight);
+    window.addEventListener('resize', syncNavHeight);
 
     function formatNoteWithLinks(noteStr) {
       if (!noteStr) return '';
