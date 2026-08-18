@@ -1718,12 +1718,14 @@
         setlist: (ev.setlist || []).map(s => ({
           orderStr: s.orderStr,
           songName: s.songName,
-          isEncore: !!s.isEncore
+          isEncore: !!s.isEncore,
+          isCrispySong: s.isCrispySong !== false,
+          note: s.note || ''
         }))
       }));
 
       const songSet = new Set();
-      norm.forEach(ev => ev.setlist.forEach(s => songSet.add(s.songName)));
+      norm.forEach(ev => ev.setlist.forEach(s => { if (s.isCrispySong) songSet.add(s.songName); }));
 
       const upcoming = norm
         .filter(ev => (ev.date || '').split('-')[0].trim() >= todayStr)
@@ -1887,7 +1889,11 @@
       return globalSongStats;
     }
 
-    function getValidEvents() { return appData.events.filter(e => e.setlist.length > 0); }
+    function getValidEvents() {
+      return appData.events
+        .filter(e => e.setlist.length > 0)
+        .sort((a, b) => b.date.split('-')[0].trim().localeCompare(a.date.split('-')[0].trim()));
+    }
 
     function calcProbs(n) {
       const valid = getValidEvents();
@@ -2150,10 +2156,14 @@
         <span style="font-weight:600;color:var(--accent-dark);">尚未公開歌單</span></div>`;
         } else {
           bodyHtml = ev.setlist.map(s => `
-        <div class="song-line">
-          <div>${s.orderStr}. <span style="cursor:pointer;font-weight:500;" onclick="openSongModal('${esc(s.songName)}')">${s.songName}</span></div>
-          ${s.isEncore ? '<div class="encore-tag">安可</div>' : ''}
-        </div>`).join('');
+          <div class="song-line">
+            <div>${s.orderStr}. ${s.isCrispySong
+                ? `<span style="cursor:pointer;font-weight:500;" onclick="openSongModal('${esc(s.songName)}')">${s.songName}</span>`
+                : `<span style="font-weight:500;">${s.songName}</span>`}
+              ${s.note ? `<span style="color:var(--text-secondary);font-size:.85rem;">（${esc(s.note)}）</span>` : ''}
+            </div>
+            ${s.isEncore ? '<div class="encore-tag">安可</div>' : ''}
+          </div>`).join('');
         }
 
         const formattedNote = formatNoteWithLinks(ev.note);
