@@ -1,6 +1,6 @@
 <!-- ======================================================== -->
 <!-- 網站設定與版本資訊 -->
-<!-- 改版時間：20260812 -->
+<!-- 改版時間：20260823 -->
 <!-- 網站開發者：y🌧️（Threads: https://www.threads.com/@raining_1123）-->
 <!-- 本站介面架構改編自「2026 芒果醬 Mango Jump 活動與歌單記錄」網站 -->
 <!-- 原始架構開發者：blues (Threads: https://www.threads.com/@blues_.g)，已取得原作者授權修改 -->
@@ -15,6 +15,9 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦕</text></svg>">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
   <style>
     :root {
       --bg-main: #fae9e1;
@@ -379,6 +382,43 @@
 
     .upc-map-link:hover {
       text-decoration: underline;
+    }
+
+    .mobile-unit-label {
+      display: block;
+      font-size: .75rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-top: .2rem;
+    }
+
+    .mobile-unit-label-inline {
+      display: block;
+      font-size: .8rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      .mobile-wrap-fix {
+        word-break: keep-all;
+        text-wrap: pretty;
+      }
+    }
+
+    .footprint-tooltip {
+      background: var(--text-main);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+    }
+
+    .footprint-tooltip::before {
+      border-top-color: var(--text-main);
     }
 
     .listen-row {
@@ -1310,8 +1350,8 @@
               style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;display:flex;justify-content:center;align-items:center;gap:4px;">
               參與場次 <span id="attended-chevron" class="portfolio-chevron" style="font-size:.8rem;">▼</span>
             </div>
-            <div style="font-size:2.3rem;font-weight:700;line-height:1;color:var(--accent-dark);" id="dash-events">0
-            </div>
+            <div style="font-size:2.3rem;font-weight:700;line-height:1;color:var(--accent-dark);" id="dash-events">0</div>
+            <div style="font-size:.75rem;color:var(--text-secondary);margin-top:.2rem;">場</div>
           </div>
           <div class="db-box">
             <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;">🎵 共聽過</div>
@@ -1320,8 +1360,8 @@
           </div>
           <div class="db-box">
             <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;">⏳ 共參與</div>
-            <div style="font-size:1.8rem;font-weight:700;line-height:1.2;color:var(--sr-color);" id="dash-time-total">0
-              分鐘</div>
+            <div style="font-size:2.3rem;font-weight:700;line-height:1;color:var(--sr-color);" id="dash-time-total">0</div>
+            <div style="font-size:.75rem;color:var(--text-secondary);margin-top:.2rem;" id="dash-time-unit">分鐘</div>
           </div>
           <div class="db-box">
             <div style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.5rem;">🔒 待解鎖</div>
@@ -1336,15 +1376,27 @@
         </div>
 
         <div class="card" style="text-align:left;margin-bottom:1.5rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem;">
+            <h3 style="margin-bottom:0;">🗺️ 你說風景無法帶走</h3>
+            <div style="display:flex;align-items:center;gap:.4rem;">
+              <input type="text" id="map-icon-input" maxlength="4" placeholder="📍" style="width:56px;text-align:center;padding:.35rem;border-radius:8px;border:1px solid var(--border);font-size:1.1rem;">
+              <button class="btn btn-sm" id="btn-save-map-icon">套用圖標</button>
+            </div>
+          </div>
+          <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem;">回憶底片 放映無聲影片🎞️跑過哪些地方呢</p>          <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem;"></p>
+          <div id="footprint-map" style="height:360px;border-radius:12px;overflow:hidden;background:var(--accent-light);"></div>
+        </div>
+
+        <div class="card" style="text-align:left;margin-bottom:1.5rem;">
           <h3 style="margin-bottom:.8rem;">🔒 尚未相遇的歌</h3>
-          <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem;">期待下次現場與它們不期而遇！依出現機率由高到低排列</p>
+          <p class="mobile-wrap-fix" style="font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem;">期待下次現場與它們不期而遇！依出現機率由高到低排列</p>
           <div id="dash-unlocked-songs"></div>
         </div>
 
         <div class="card" style="text-align:left;">
           <div
             style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;">
-            <h3 style="margin-bottom:0;">🎧 您的金曲收藏庫</h3>
+            <h3 style="margin-bottom:0;">🎧 您的歌曲收藏庫</h3>
             <div class="sort-bar">
               <button class="sort-btn" id="sort-pct-btn" onclick="setHeardSort('pct')">出現率 ↑</button>
               <button class="sort-btn active" id="sort-cnt-btn" onclick="setHeardSort('count')">聽過次數 ↓</button>
@@ -1427,7 +1479,7 @@
     <!-- ===== FORMS ===== -->
     <div id="view-forms" class="view">
       <h2>📋 表單專區</h2>
-      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">脆樂團的大挑戰，還有想跟開發者說的話，都在這裡！</p>
+      <p style="color:var(--text-secondary);margin-bottom:1.5rem;">脆樂團的大挑戰 & 意見回饋區</p>
       <div class="form-tab-bar" id="form-tabs">
         <div class="form-tab active" data-form="tmi">TMI 大挑戰</div>
         <div class="form-tab" data-form="mv">MV 大挑戰</div>
@@ -1442,7 +1494,7 @@
 
   <footer
     style="max-width: 960px; margin: 2rem auto; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 0.82rem; color: var(--text-secondary); border-top: 1px solid var(--border); gap: 0.3rem;">
-    <div>改版時間：20260812</div>
+    <div>改版時間：20260823</div>
     <div>網站開發者：<a
         href="https://www.threads.com/@raining_1123" target="_blank"
         style="color: var(--accent-dark); text-decoration: none; font-weight: 600;">y🌧️</a></div>
@@ -1759,6 +1811,19 @@
       tryAutoLogin();
     }
 
+    function goToEventCard(id) {
+      switchTab('view-events');
+      setTimeout(() => {
+        const card = document.querySelector(`.event-card[data-id="${id}"]`);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('expanded');
+          card.style.boxShadow = '0 0 0 3px var(--accent)';
+          setTimeout(() => { card.style.boxShadow = ''; }, 1500);
+        }
+      }, 50);
+    }
+
     function renderUpcomingEvents() {
       const widget = document.getElementById('upcoming-widget');
       const listEl = document.getElementById('upcoming-list');
@@ -1806,16 +1871,7 @@
         row.addEventListener('click', e => {
           if (e.target.closest('a')) return; // 讓地圖/購票連結自己開新分頁，不要被攔截去切頁籤
           const id = row.getAttribute('data-id');
-          switchTab('view-events');
-          setTimeout(() => {
-            const card = document.querySelector(`.event-card[data-id="${id}"]`);
-            if (card) {
-              card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              card.classList.add('expanded');
-              card.style.boxShadow = '0 0 0 3px var(--accent)';
-              setTimeout(() => { card.style.boxShadow = ''; }, 1500);
-            }
-          }, 50);
+          goToEventCard(id);
         });
       });
 
@@ -2030,6 +2086,8 @@
         </div>
       `;
     }
+
+
 
     document.getElementById('btn-draw-song').addEventListener('click', () => {
       const drawBtn = document.getElementById('btn-draw-song');
@@ -2397,9 +2455,102 @@
       if (el.style.display === 'none') { el.style.display = 'block'; if (chevron) chevron.classList.add('open'); } else { el.style.display = 'none'; if (chevron) chevron.classList.remove('open'); }
     }
 
+    // 🗺️ 畫出「我的足跡地圖」，只標出使用者勾選過的場次
+    let footprintMapInst = null;
+    let footprintMarkersLayer = null;
+    const LS_MAP_ICON = 'crispy_map_icon';
+    function getMapIcon() { return localStorage.getItem(LS_MAP_ICON) || '📍'; }
+
+    document.getElementById('map-icon-input').value = getMapIcon();
+    document.getElementById('btn-save-map-icon').addEventListener('click', () => {
+      const val = document.getElementById('map-icon-input').value.trim();
+      if (val) {
+        localStorage.setItem(LS_MAP_ICON, val);
+        if (currentUser) renderFootprintMap(currentUser.attendedIds);
+        showToast('✨ 圖標已更新！');
+      }
+    });
+
+    function renderFootprintMap(attendedIds) {
+      const mapEl = document.getElementById('footprint-map');
+      if (!mapEl || typeof L === 'undefined') return;
+
+      // 容器還沒顯示出來（寬度是 0）就先不要畫，等一下再重試
+      if (!footprintMapInst && mapEl.offsetWidth === 0) {
+        setTimeout(() => renderFootprintMap(attendedIds), 150);
+        return;
+      }
+
+      // 台灣中心點，預設縮放範圍
+      if (!footprintMapInst) {
+        footprintMapInst = L.map('footprint-map', { attributionControl: false }).setView([23.6, 121.0], 7);
+        footprintMarkersLayer = L.layerGroup().addTo(footprintMapInst);
+
+        // 世界地圖外框（極簡化版本，只有國界，讓海外場次也有背景可以對照）
+        fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+          .then(res => res.json())
+          .then(topology => {
+            const geo = topojson.feature(topology, topology.objects.countries);
+            L.geoJSON(geo, {
+              filter: feature => Number(feature.id) !== 158, // 158 = 台灣，這裡不畫，讓下面台灣縣市邊界層單獨顯示
+              style: { color: '#e8ddd0', weight: 0.6, fillColor: '#fbf5ee', fillOpacity: 1 }
+            }).addTo(footprintMapInst);
+            footprintMarkersLayer.bringToFront();
+          })
+          .catch(() => {});
+
+        // 只載一次台灣縣市邊界線稿（MIT 授權開放資料），之後縮放平移都不用再連網路
+        fetch('https://cdn.jsdelivr.net/npm/taiwan-atlas/counties-10t.json')
+          .then(res => res.json())
+          .then(topology => {
+            const geo = topojson.feature(topology, topology.objects.counties);
+            L.geoJSON(geo, {
+              style: { color: '#d8c9bc', weight: 1, fillColor: '#fdf8f3', fillOpacity: 1 }
+            }).addTo(footprintMapInst);
+            footprintMarkersLayer.bringToFront();
+          })
+          .catch(() => {});
+      }
+
+      footprintMarkersLayer.clearLayers();
+
+      const attendedEvents = appData.events.filter(ev => attendedIds.includes(ev.id) && ev.lat && ev.lng);
+
+      if (!attendedEvents.length) {
+        footprintMapInst.setView([23.6, 121.0], 7);
+        return;
+      }
+
+      const iconEmoji = getMapIcon();
+      const pinIcon = L.divIcon({
+        html: `<div style="font-size:28px;line-height:1;transform:translate(-50%,-100%);">${iconEmoji}</div>`,
+        className: '',
+        iconSize: [0, 0]
+      });
+
+      const bounds = [];
+      attendedEvents.forEach(ev => {
+        const marker = L.marker([ev.lat, ev.lng], { icon: pinIcon }).addTo(footprintMarkersLayer);
+        marker.bindTooltip(ev.name, { direction: 'top', offset: [0, -30], className: 'footprint-tooltip' });
+        marker.bindPopup(`<div style="cursor:pointer;" onclick="goToEventCard('${ev.id}')"><b>${ev.name}</b><br>${formatEventDate(ev.date)}${ev.location ? `<br>📍 ${ev.location}` : ''}</div>`);
+        bounds.push([ev.lat, ev.lng]);
+      });
+      footprintMarkersLayer.bringToFront();
+
+      if (bounds.length === 1) {
+        footprintMapInst.setView(bounds[0], 12);
+      } else {
+        footprintMapInst.fitBounds(bounds, { padding: [30, 30] });
+      }
+
+      // 地圖卡片如果一開始是 display:none 狀態下初始化，尺寸會算錯，切換頁籤後強制重新計算一次
+      setTimeout(() => { if (footprintMapInst) footprintMapInst.invalidateSize(); }, 200);
+    }
+
     function updateDashboard() {
       if (!currentUser) return;
       const ids = currentUser.attendedIds;
+      renderFootprintMap(ids);
       const totalEvts = appData.events.length;
       const validN = getValidEvents().length;
       const probsAll = calcProbs(validN);
@@ -2419,17 +2570,20 @@
       ids.forEach(id => {
         const ev = appData.events.find(e => e.id === id);
         if (ev) {
-          totalSongsHeard += ev.setlist.length;
+          const crispySongs = ev.setlist.filter(s => s.isCrispySong);
+          totalSongsHeard += crispySongs.length;
           totalTimeMins += ev.durationMins || parseDurationFromTimeStr(ev.timeStr) || 0;
-          ev.setlist.forEach(s => { songCounts[s.songName] = (songCounts[s.songName] || 0) + 1; });
+          crispySongs.forEach(s => { songCounts[s.songName] = (songCounts[s.songName] || 0) + 1; });
         }
       });
 
       document.getElementById('dash-heard-songs-total').innerText = totalSongsHeard;
       if (totalTimeMins >= 60) {
-        document.getElementById('dash-time-total').innerText = (totalTimeMins / 60).toFixed(1) + ' 小時';
+        document.getElementById('dash-time-total').innerText = (totalTimeMins / 60).toFixed(1);
+        document.getElementById('dash-time-unit').innerText = '小時';
       } else {
-        document.getElementById('dash-time-total').innerText = totalTimeMins + ' 分鐘';
+        document.getElementById('dash-time-total').innerText = totalTimeMins;
+        document.getElementById('dash-time-unit').innerText = '分鐘';
       }
 
       const unlocked = appData.songs
@@ -2439,13 +2593,13 @@
       document.getElementById('dash-unlocked-cnt').innerText = unlocked.length;
       const ulEl = document.getElementById('dash-unlocked-songs');
       if (!unlocked.length) { 
-        ulEl.innerHTML = '<div style="color:var(--up);font-weight:600;text-align:center;padding:1rem 0;">🎉 太厲害了！您已解鎖所有歌曲的現場演出！</div>'; 
+        ulEl.innerHTML = '<div class="mobile-wrap-fix" style="color:var(--accent);font-weight:600;text-align:center;padding:1rem 0;">🎉 太厲害了！您已解鎖所有歌曲的現場演出！</div>';
       } 
       else { 
         ulEl.innerHTML = unlocked.map((s, i) => `<div class="heard-row"><div style="display:flex;align-items:flex-start;min-width:0;"><span style="color:var(--text-secondary);margin-right:8px;flex-shrink:0;">#${i + 1}</span><span style="cursor:pointer;font-weight:500;word-break:keep-all;overflow-wrap:break-word;text-wrap:pretty;min-width:0;" onclick="openSongModal('${esc(s.name)}')">${s.name}</span></div><div style="display:flex;align-items:center;gap:.5rem;flex-shrink:0;"><span style="color:var(--text-secondary);font-size:.9rem;">出現率 ${s.pct}%</span></div></div>`).join(''); 
       }      
       let title = '🦕 我還是個孩子';
-      if (ids.length >= 25) title = '🌟 編織星空的人'; else if (ids.length >= 15) title = '🌌 黑暗的盡頭是你和脆'; else if (ids.length >= 8) title = '🚅 離開與到來'; else if (ids.length >= 3) title = '🦖 揹上快樂北上';
+      if (ids.length >= 20) title = '🌟 編織星空的人'; else if (ids.length >= 13) title = '🌌 黑暗的盡頭是你和脆'; else if (ids.length >= 8) title = '🚅 離開與到來'; else if (ids.length >= 3) title = '🦖 揹上快樂北上';
       document.getElementById('journey-title').innerText = title;
 
       heardSongs = Object.keys(songCounts).map(name => { const st = getSongStats(name); return { name, count: songCounts[name], pct: st.total }; });
@@ -2463,7 +2617,7 @@
               <div style="font-weight:600;color:var(--text-main);">${ev.name}</div>
             </div>
             <div style="font-size:.8rem;color:var(--accent-dark);font-weight:600;background:var(--accent-light);padding:2px 8px;border-radius:6px;">
-              ${ev.setlist.length} 首金曲
+              ${ev.setlist.length} 首歌曲
             </div>
           </div>
         `).join('');
