@@ -1380,7 +1380,7 @@
             <h3 style="margin-bottom:0;">🗺️ 你說風景無法帶走</h3>
             <div style="display:flex;align-items:center;gap:.4rem;">
               <input type="text" id="map-icon-input" maxlength="4" placeholder="📍" style="width:56px;text-align:center;padding:.35rem;border-radius:8px;border:1px solid var(--border);font-size:1.1rem;">
-              <button class="btn btn-sm" id="btn-save-map-icon">套用圖標</button>
+              <button class="btn btn-sm" id="btn-save-map-icon">套用圖示</button>
             </div>
           </div>
           <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem;">回憶底片 放映無聲影片🎞️跑過哪些地方呢</p>          <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:1rem;"></p>
@@ -2467,7 +2467,7 @@
       if (val) {
         localStorage.setItem(LS_MAP_ICON, val);
         if (currentUser) renderFootprintMap(currentUser.attendedIds);
-        showToast('✨ 圖標已更新！');
+        showToast('✨ 圖示已更新！');
       }
     });
 
