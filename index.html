@@ -2197,7 +2197,7 @@
     function renderEventsList() {
       const container = document.getElementById('events-list');
       container.innerHTML = '';
-      [...appData.events].reverse().forEach(ev => {
+      [...appData.events].sort((a, b) => b.date.split('-')[0].trim().localeCompare(a.date.split('-')[0].trim())).forEach(ev => {
         const card = document.createElement('div');
         card.className = 'card event-card';
         card.setAttribute('data-id', ev.id);
